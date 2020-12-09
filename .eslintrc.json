@@ -25,5 +25,6 @@
       }
     ],
     "object-curly-newline": "off"
+    // "no-throw-literal": "off"
   }
 }
