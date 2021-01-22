@@ -9,7 +9,7 @@ const createUser = async ({ name, email, password, role = 'user' }) => {
     .then((users) => users.findOne({ email }));
 
   const newUser = await connection('users')
-    .then((users) => users.insertOne({ name, email, password }));
+    .then((users) => users.insertOne({ name, email, password, role }));
   const user = { _id: newUser.insertedId, name, email, role };
 
   return emailAlreadyExists ? false : { user };

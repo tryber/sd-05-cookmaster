@@ -11,20 +11,27 @@ const isValidEmail = (email) => {
 
 const isValidPassword = (password) => !!password;
 
-const validateEntries = (userData, login) => {
-  const { name, email, password } = userData;
-  return login
-    ? isValidEmail(email) && isValidPassword(password)
-    : isValidName(name) && isValidEmail(email) && isValidPassword(password);
+const validateEntries = (formData, from) => {
+  switch (from) {
+    case 'login':
+      return isValidEmail(formData.email) && isValidPassword(formData.password);
+    case 'users':
+      return (
+        isValidName(formData.name)
+        && isValidEmail(formData.email)
+        && isValidPassword(formData.password)
+      );
+    default:
+      return (!!formData.name && !!formData.preparation && formData.ingredients);
+  }
 };
 
 module.exports = (req, res, next) => {
-  const userData = req.body;
+  const formData = req.body;
   // req.baseUrl = The URL path on which a router instance was mounted.
-  const login = req.baseUrl.includes('login');
-  const message = login ? 'All fields must be filled' : 'Invalid entries. Try again.';
-  const code = login ? 401 : 400;
+  const from = req.baseUrl.slice(1);
+  const message = from === 'login' ? 'All fields must be filled' : 'Invalid entries. Try again.';
+  const code = from === 'login' ? 401 : 400;
   // if login === true, user is trying to login, else, is trying to register
-  if (!validateEntries(userData, login)) return res.status(code).json({ message });
-  next();
+  return validateEntries(formData, from) ? next() : res.status(code).json({ message });
 };
