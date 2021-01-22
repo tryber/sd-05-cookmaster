@@ -1,34 +1,16 @@
 const { Router } = require('express');
+const rescue = require('express-rescue');
+// const validateJWT = require('../auth/validateJWT');
 
 // Router é agrupador de middlewares
 const userRouter = Router();
 
 const UserService = require('../services/UserService');
 /*  ********************************************************************************************* */
-// 1 - Crie um endpoint para o cadastro de produtos
-// POST /product/ -> Comportamento de create
-userRouter.post('/', async (req, res) => {
+userRouter.post('/', rescue(async (req, res) => {
   const { name, email, password } = req.body;
-  try {
-    const userCriado = await UserService.create(name, email, password);
-    if (!userCriado) return res.status(400).json({ message: 'Usuário Não Criado!' });
-    return res.status(201).json(userCriado);
-  } catch (err) {
-    if (err.code === 'invalid_entries') return res.status(400).json(err);
-    if (err.code === 'email_used') return res.status(409).json(err);
-    res.status(500).json({ message: 'Algo deu errado' });
-  }
-});
-
-userRouter.get('/', async (req, res) => {
-  try {
-    const users = await UserService.getAll();
-    // com status http 200
-    res.status(200).json({ users });
-  } catch (err) {
-    // sem cenário de invalid_data neste caso
-    res.status(500).json({ message: 'Internal error' });
-  }
-});
+  const userCriado = await UserService.create(name, email, password);
+  res.status(201).json({ user: userCriado });
+}));
 
 module.exports = userRouter;

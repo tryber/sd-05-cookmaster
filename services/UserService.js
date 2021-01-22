@@ -1,29 +1,18 @@
 const UserModel = require('../models/UserModel');
-const erroSender = require('./errorService');
-
-/*  ********************************************************************************************* */
-const isValid = async (name, email, password) => {
-  const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
-  console.log(name, email, password);
-  if (!name || !email || !regex.test(email) || !password) {
-    throw erroSender('invalid_entries', 'Invalid entries. Try again.');
-  }
-  const existingEmail = await UserModel.findByEmail(email);
-  if (existingEmail) {
-    throw erroSender('email_used', 'Email already registered');
-  }
-  return true;
-};
+const ThrowMyError = require('../middlewares/configError');
 
 const create = async (name, email, password, role = 'user') => {
-  const validUser = await isValid(name, email, password);
-  if (!validUser) return false;
-  const newUser = await UserModel.create(name, email, password, role);
-  return {
-    user: newUser,
-  };
+  const validEmail = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+  if (!name || !email || !password || !validEmail.test(email)) {
+    throw new ThrowMyError('Invalid entries. Try again.', 'invalid_entries');
+  }
+
+  const userByMail = await UserModel.findByEmail(email);
+  if (userByMail) {
+    throw new ThrowMyError('Email already registered', 'email_already_exists');
+  }
+
+  return UserModel.create(name, email, password, role);
 };
 
-const getAll = async () => UserModel.getAll();
-
-module.exports = { create, getAll };
+module.exports = { create };

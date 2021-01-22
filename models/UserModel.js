@@ -12,12 +12,7 @@ const create = async (name, email, password, role) =>
     .then((user) => user.insertOne({ name, email, password, role }))
     .then((result) => ({ name, email, role: 'user', password, _id: result.insertedId }));
 
-const getAll = async () =>
-  connection('users')
-    .then((users) => users.find().toArray());
-
 module.exports = {
-  getAll,
   create,
   findByEmail,
 };
