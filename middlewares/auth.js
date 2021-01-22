@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
     return res.status(401).json({ message: 'missing auth token' });
   }
   try {
-    jwt.verify(authorization, secret);
+    req.headers.role = jwt.verify(authorization, secret).role;
     next();
   } catch (err) {
     return res.status(401).json({ message: err.message });

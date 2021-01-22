@@ -22,7 +22,7 @@ const validateEntries = (formData, from) => {
         && isValidPassword(formData.password)
       );
     default:
-      return (!!formData.name && !!formData.preparation && formData.ingredients);
+      return (!!formData.name && !!formData.preparation && !!formData.ingredients);
   }
 };
 

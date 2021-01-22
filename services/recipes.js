@@ -7,8 +7,8 @@ const editRecipe = async (recipeData, recipeId) => recipesModel.editRecipe(recip
 const editRecipeImage = async (recipeId) => recipesModel.editRecipeImage(recipeId);
 
 module.exports = {
-  createRecipe,
   listRecipes,
+  createRecipe,
   editRecipe,
   deleteRecipe,
   editRecipeImage,

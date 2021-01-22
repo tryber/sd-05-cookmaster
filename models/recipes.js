@@ -9,6 +9,7 @@ const createRecipe = async ({ name, ingredients, preparation }) => {
   return { recipe };
 };
 
+// list all recipes if or a specific one
 const listRecipes = async (recipeId) => (
   recipeId
     ? connection('recipes').then((recipes) => recipes.findOne({ _id: ObjectId(recipeId) }))
