@@ -11,9 +11,7 @@ module.exports = (err, _req, res, _next) => {
     return res.status(404).json({ message: err.message });
   }
 
-  if (err.code === 'missing_token' ||
-    err.code === 'invalid_login' ||
-    err.code === 'fields_filled') {
+  if (err.code === 'missing_token' || err.code === 'invalid_login' || err.code === 'fields_filled') {
     return res.status(401).json({ message: err.message });
   }
 
