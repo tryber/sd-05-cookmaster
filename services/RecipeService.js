@@ -7,7 +7,9 @@ const Validation = async (name, ingredients, preparation, userId) => {
     throw new ThrowMyError('Invalid entries. Try again', 'invalid_entries');
   }
 
-  return await RecipeModel.add(name, ingredients, preparation, userId);
+  return RecipeModel.add(name, ingredients, preparation, userId);
 };
 
-module.exports = { Validation };
+const getAll = async () => RecipeModel.getAll();
+
+module.exports = { Validation, getAll };

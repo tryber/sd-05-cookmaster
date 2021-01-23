@@ -15,6 +15,11 @@ recipeRouter.post('/', validateJWT, rescue(async (req, res) => {
   res.status(201).json(recipe);
 }));
 
+recipeRouter.get('/', rescue(async (req, res) => {
+  const recipes = await recipeService.getAll();
+  res.status(201).json(recipes);
+}));
+
 module.exports = recipeRouter;
 
 // 2 - Crie um endpoint para o login de usuários
