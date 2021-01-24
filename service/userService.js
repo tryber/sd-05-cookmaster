@@ -1,10 +1,10 @@
-const productModel = require('../model/userModel');
+const userModel = require('../model/userModel');
 
 const errorMessage = (message, code) => ({ err: { message, code } });
 
 const createUser = async ({name, email, password}) => {
   console.log(name);
-  const productCreated = await productModel.addUser(name, email, password);
+  const userCreated = await userModel.addUser(name, email, password);
   const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const emailValidation = ((emailx) => emailRegex.test(String(emailx).toLowerCase()) && !!emailx);
 
@@ -23,7 +23,12 @@ const createUser = async ({name, email, password}) => {
   if (!password) {
     return errorMessage('"password" is required', 'invalid_data');
   }
-  return productCreated;
+  return userCreated;
 };
 
-module.exports = { createUser };
+// terminar
+// const login = async (email, password) => {
+//   await userModel.Log()
+// }
+
+module.exports = { createUser, login };

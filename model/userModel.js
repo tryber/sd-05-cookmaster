@@ -8,7 +8,7 @@ const addUser = async (name, email, password, role = 'user') =>
       .then((result) => result.ops[0])
       .catch((err) => console.log(err)));
 
-const findByEmail = async (email) =>
+const findByEmailndPassword = async (email) =>
   getConnection()
     .then((db) => db.collection('users').findOne({ email }))
     .catch((err) => console.log(err));
@@ -19,7 +19,7 @@ const findById = async (id) =>
     .catch((err) => console.log(err));
 
 module.exports = {
-  findByEmail,
-  findById,
   addUser,
+  findByEmailndPassword,
+  findById,
 };

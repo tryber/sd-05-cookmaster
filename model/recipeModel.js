@@ -4,6 +4,7 @@ const { ObjectId } = require('mongodb');
 const insertRecipe = async (name, quantity) => 
   getConnection()
     .then((db) => db.collection('recipes').insertOne({ name, quantity }))
+    .then((result) => result.ops[0])
     .catch((err) => console.log(err));
 
 const findAllRecipes = async () =>
