@@ -5,7 +5,7 @@ const ThrowMyError = require('../middlewares/configError');
 const secret = 'lyumbinka';
 
 const jwtConfig = {
-  expiresIn: '30m',
+  expiresIn: '24h',
   algorithm: 'HS256',
 };
 

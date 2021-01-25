@@ -26,4 +26,14 @@ const getById = async (id) => {
   return recipe;
 };
 
-module.exports = { Validation, getAll, getById };
+const update = async (id, name, ingredients, preparation, userId) => {
+  const recipe = await getById(id);
+
+  if (!recipe) {
+    throw new ThrowMyError('recipe not found', 'invalid_id');
+  }
+
+  return RecipeModel.update(id, name, ingredients, preparation, userId);
+};
+
+module.exports = { Validation, getAll, getById, update };

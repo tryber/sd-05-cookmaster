@@ -26,4 +26,13 @@ recipeRouter.get('/:id', rescue(async (req, res) => {
   res.status(200).json(recipes);
 }));
 
+recipeRouter.put('/:id', validateJWT, rescue(async (req, res) => {
+  const { id } = req.params;
+  const { name, ingredients, preparation } = req.body;
+  const { _id: userId } = req.user;
+
+  const recipes = await recipeService.update(id, name, ingredients, preparation, userId);
+  res.status(200).json(recipes);
+}));
+
 module.exports = recipeRouter;
