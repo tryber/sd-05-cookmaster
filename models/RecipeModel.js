@@ -3,7 +3,7 @@ const connection = require('./connection');
 
 /*  ********************************************************************************************* */
 const add = async (name, ingredients, preparation, userId) =>
-  connection('recipe')
+  connection('recipes')
     .then((recipe) => recipe.insertOne({ name, ingredients, preparation, userId }))
     .then((result) => ({
       _id: result.insertedId,
@@ -14,7 +14,7 @@ const add = async (name, ingredients, preparation, userId) =>
     }));
 
 const getAll = async () =>
-  connection('recipe')
+  connection('recipes')
     .then((recipes) => recipes.find().toArray());
 
 module.exports = {

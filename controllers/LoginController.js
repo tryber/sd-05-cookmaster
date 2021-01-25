@@ -3,8 +3,8 @@ const rescue = require('express-rescue');
 
 // Router é agrupador de middlewares
 const LoginService = require('../services/LoginService');
-const loginRouter = Router();
 
+const loginRouter = Router();
 
 /*  ********************************************************************************************* */
 loginRouter.post('/', rescue(async (req, res) => {

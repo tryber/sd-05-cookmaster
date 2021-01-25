@@ -1,6 +1,6 @@
+const jwt = require('jsonwebtoken');
 const UserModel = require('../models/UserModel');
 const ThrowMyError = require('../middlewares/configError');
-const jwt = require('jsonwebtoken');
 
 /*  ********************************************************************************************* */
 const secret = 'lyumbinka';
@@ -11,7 +11,7 @@ const jwtConfig = {
 };
 
 const getUser = async (email, password) => {
-  if (!email || !password ) {
+  if (!email || !password) {
     throw new ThrowMyError('All fields must be filled', 'fields_filled');
   }
 
