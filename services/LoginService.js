@@ -10,7 +10,7 @@ const jwtConfig = {
 };
 
 const getUser = async (email, password) => {
-  if (!email || !password ) {
+  if (!email || !password) {
     throw new ThrowMyError('All fields must be filled', 'fields_filled');
   }
 
