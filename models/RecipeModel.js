@@ -5,12 +5,13 @@ const connection = require('./connection');
 const add = async (name, ingredients, preparation, userId) =>
   connection('recipes')
     .then((recipe) => recipe.insertOne({ name, ingredients, preparation, userId }))
-    .then((result) => ({
-      _id: result.insertedId,
+    .then((result) => ({ recipe: {
       name,
       ingredients,
       preparation,
       userId,
+      _id: result.insertedId,
+    },
     }));
 
 const getAll = async () =>
