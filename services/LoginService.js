@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../models/UserModel');
 const ThrowMyError = require('../middlewares/configError');
 
-/*  ********************************************************************************************* */
 const secret = 'lyumbinka';
 
 const jwtConfig = {

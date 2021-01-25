@@ -1,7 +1,5 @@
-const { Router } = require('express');
 const rescue = require('express-rescue');
-
-// Router é agrupador de middlewares
+const { Router } = require('express');
 const LoginService = require('../services/LoginService');
 
 const loginRouter = Router();
