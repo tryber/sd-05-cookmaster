@@ -14,10 +14,4 @@ userRoute.post(
   },
 );
 
-userRoute.get('/', async (_req, res) => {
-  const user = await userService.getUsersByEmail();
-  if (!user) res.status(400).json({ message: 'dados inválidos' });
-  res.status(201).json(user);
-});
-
 module.exports = userRoute;

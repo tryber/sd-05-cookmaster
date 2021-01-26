@@ -2,12 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const userController = require('./controller/userController');
+const loginController = require('./controller/loginController');
 
 const app = express();
 
 // app.use(express.json());
 app.use(bodyParser.json());
 app.use('/users', userController);
+
+app.use('/login', loginController);
 
 // app.use('/', recipeController);
 
