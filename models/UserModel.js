@@ -10,7 +10,7 @@ const findByEmail = async (email) =>
 const create = async (name, email, password, role) =>
   connection('users')
     .then((user) => user.insertOne({ name, email, password, role }))
-    .then((result) => ({ name, email, role: 'user', _id: result.insertedId }));
+    .then((result) => ({ name, email, role, _id: result.insertedId }));
 
 module.exports = {
   create,
