@@ -1,6 +1,15 @@
 /* eslint-disable no-undef */
 const connection = require('./connection');
 
+const getUsers = async () =>
+  connection()
+    .then((db) => db.collection('users').find().toArray())
+    .then((users) =>
+      users.map(({ _id, name, email, password, role }) => ({
+        id: _id, name, email, password, role,
+      })))
+    .catch((err) => err);
+
 const addUser = async (name, email, password, role = 'user') =>
   connection()
     .then((db) => db.collection('users')
@@ -8,18 +17,19 @@ const addUser = async (name, email, password, role = 'user') =>
       .then((result) => result.ops[0])
       .catch((err) => console.log(err)));
 
-const findByEmailndPassword = async (email) =>
-  getConnection()
+const findByEmail = async (email) =>
+  connection()
     .then((db) => db.collection('users').findOne({ email }))
     .catch((err) => console.log(err));
 
 const findById = async (id) =>
-  getConnection()
+  connection()
     .then((db) => db.collection('products').findOne(ObjectId(id)))
     .catch((err) => console.log(err));
 
 module.exports = {
+  getUsers,
   addUser,
-  findByEmailndPassword,
+  findByEmail,
   findById,
 };
