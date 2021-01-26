@@ -36,4 +36,18 @@ const update = async (id, name, ingredients, preparation, userId) => {
   return RecipeModel.update(id, name, ingredients, preparation, userId);
 };
 
-module.exports = { Validation, getAll, getById, update };
+const removeById = async (id) => {
+  const recipe = await getById(id);
+  if (!recipe) {
+    throw new ThrowMyError('recipe not found', 'invalid_id');
+  }
+  await RecipeModel.removeById(id);
+};
+
+const saveImage = async (id) => {
+  const recipe = await getById(id);
+  const recipeWithImg = await RecipeModel.saveImage(id, recipe);
+  return recipeWithImg;
+};
+
+module.exports = { Validation, getAll, getById, update, removeById, saveImage };

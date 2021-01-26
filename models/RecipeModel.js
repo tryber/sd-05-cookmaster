@@ -31,9 +31,24 @@ const update = async (id, name, ingredients, preparation, userId) => {
   return { _id: id, name, ingredients, preparation, userId };
 };
 
+const removeById = async (id) =>
+  connection('recipes')
+    .then((recipes) => recipes.deleteOne({ _id: ObjectId(id) }));
+
+const saveImage = async (id, recipe) => {
+  const result = await connection('recipes').updateOne(
+    { _id: ObjectId(id) },
+    { $set: { image: `localhost:3000/images/${id}.jpeg` } },
+  ).then(() => ({ image: `localhost:3000/images/${id}.jpeg` }));
+
+  return { ...recipe, ...result };
+};
+
 module.exports = {
   add,
   getAll,
   update,
   getById,
+  removeById,
+  saveImage,
 };
