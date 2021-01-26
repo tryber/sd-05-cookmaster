@@ -44,20 +44,15 @@ recipeRouter.delete('/:id', validateJWT, rescue(async (req, res) => {
 
 const storage = multer.diskStorage({
   destination: 'uploads',
-  filename: (req, file, callback) => {
-    const { id } = req.params;
-    callback(null, `${id}.jpeg`);
-  },
+  filename: (req, file, callback) => callback(null, `${req.params.id}.jpeg`),
 });
 
 const upload = multer({ storage });
 
-recipeRouter.put('/:id/image', upload.single('image'), validateJWT, rescue(async (req, res) => {
+recipeRouter.put('/:id/image', validateJWT, upload.single('image'), async (req, res) => {
   const { id } = req.params;
-
-  const success = await recipeService.saveImage(id);
-
-  return res.status(200).json(success);
-}));
+  const recipe = await recipeService.saveImage(id);
+  return res.status(200).json(recipe);
+});
 
 module.exports = recipeRouter;
