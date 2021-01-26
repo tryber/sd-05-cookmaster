@@ -44,4 +44,10 @@ const removeById = async (id) => {
   await RecipeModel.removeById(id);
 };
 
-module.exports = { Validation, getAll, getById, update, removeById };
+const saveImage = async (id) => {
+  const recipe = await getById(id);
+  const recipeWithImg = await RecipeModel.saveImage(id, recipe);
+  return recipeWithImg;
+};
+
+module.exports = { Validation, getAll, getById, update, removeById, saveImage };

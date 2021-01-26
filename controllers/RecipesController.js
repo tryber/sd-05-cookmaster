@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
+const multer = require('multer');
 const validateJWT = require('../auth/validateJWT');
 const recipeService = require('../services/RecipeService');
 
@@ -39,6 +40,24 @@ recipeRouter.delete('/:id', validateJWT, rescue(async (req, res) => {
   const { id } = req.params;
   await recipeService.removeById(id);
   return res.status(204).json({ message: 'deleted' });
+}));
+
+const storage = multer.diskStorage({
+  destination: 'uploads',
+  filename: (req, file, callback) => {
+    const { id } = req.params;
+    callback(null, `${id}.jpeg`);
+  },
+});
+
+const upload = multer({ storage });
+
+recipeRouter.put('/:id/image', upload.single('image'), validateJWT, rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const success = await recipeService.saveImage(id);
+
+  return res.status(200).json(success);
 }));
 
 module.exports = recipeRouter;
