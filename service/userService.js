@@ -2,11 +2,6 @@ const userModel = require('../model/userModel');
 
 const errorMessage = (message, code) => ({ err: { message, code } });
 
-const getUsers = async () => {
-  const allUsers = await userModel.getUsers();
-  console.log('aqui no service', allUsers);
-};
-
 const getUsersByEmail = async () => {
   const userEmail = await userModel.findByEmail();
   console.log('aqui no service', userEmail);
