@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const routes = require('./routes');
 const handleErrors = require('./middlewares/handleErrors');
 
@@ -13,6 +14,8 @@ app.use(bodyParser.json());
 app.get('/', (request, response) => {
   response.send();
 });
+
+app.use('/images', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/users', routes.UserController);
 
