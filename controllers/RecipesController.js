@@ -35,4 +35,10 @@ recipeRouter.put('/:id', validateJWT, rescue(async (req, res) => {
   res.status(200).json(recipes);
 }));
 
+recipeRouter.delete('/:id', validateJWT, rescue(async (req, res) => {
+  const { id } = req.params;
+  await recipeService.removeById(id);
+  return res.status(204).json({ message: 'deleted' });
+}));
+
 module.exports = recipeRouter;

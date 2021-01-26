@@ -31,9 +31,14 @@ const update = async (id, name, ingredients, preparation, userId) => {
   return { _id: id, name, ingredients, preparation, userId };
 };
 
+const removeById = async (id) =>
+  connection('recipes')
+    .then((recipes) => recipes.deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   add,
   getAll,
   update,
   getById,
+  removeById,
 };
