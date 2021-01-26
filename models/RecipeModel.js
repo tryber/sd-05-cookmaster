@@ -35,10 +35,18 @@ const removeById = async (id) =>
   connection('recipes')
     .then((recipes) => recipes.deleteOne({ _id: ObjectId(id) }));
 
+const image = async (req) => {
+  const { params: { id } } = req;
+  const imageName = `${req.get('host')}/images/${id}.jpeg`;
+  await connection('recipes').then((recipes) => recipes.updateOne({ _id: ObjectId(id) }, { $set: { image: imageName } }));
+  return getById(id);
+};
+
 module.exports = {
   add,
   getAll,
   update,
+  image,
   getById,
   removeById,
 };
