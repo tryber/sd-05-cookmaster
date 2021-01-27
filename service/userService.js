@@ -1,4 +1,8 @@
+const jwt = require('jsonwebtoken');
+
 const userModel = require('../model/userModel');
+
+const secret = 'master of puppets';
 
 const errorMessage = (message, code) => ({ err: { message, code } });
 
@@ -23,10 +27,13 @@ const createUser = async ({ name, email, password }) => {
 };
 
 const userLogin = async (email, password) => {
-  if (!email || !password) return errorMessage('Email and password is required')
+  console.log('user service:', email);
   const user = await userModel.findByEmail(email);
-  if (!user) return errorMessage('Try again', 'invalid_data');
-  if (password !== user.password) return errorMessage('Wrong password!', 'invalid_data');
+  if (!user) return errorMessage('Incorrect username or password', 'invalid_data');
+  if (password !== user.password) return errorMessage('Incorrect username or password', 'invalid_data');
+  const tokenConfig = { expiresIn: '8h', algorithm: 'HS256' };
+  const token = jwt.sign({ name: user.name, email, role: user.role }, secret, tokenConfig);
+  return { token };
 };
 
 module.exports = { createUser, userLogin };
