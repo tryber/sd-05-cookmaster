@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const loginRouter = Router();
 const { signUp, findUser } = require('../models');
+
 const secret = 'secretPassword';
 
 const jwtConfig = {
