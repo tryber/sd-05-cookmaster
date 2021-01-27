@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
-const { userRouter } = require('./controllers');
+const { userRouter, loginRouter } = require('./controllers');
 
 app.use(bodyParser.json());
 // não remova esse endpoint, e para o avaliador funcionar
@@ -12,6 +12,8 @@ app.get('/', (request, response) => {
 // inicio do projeto
 
 app.use('/users', userRouter);
+
+app.use('/login', loginRouter);
 
 const PORT = 3000;
 app.listen(PORT, () => {
