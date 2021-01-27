@@ -14,10 +14,10 @@ const showAllRecipes = async (req, res) => {
   res.status(200).json({ allRecipes });
 };
 
-const currentRecipe = async (req, res) => {
-  const { user } = req;
-  const recipe = await recipeService.getRecipeById(req.params.id);
-  const isRecipeCreator = !!user && user.id === recipe.userId;
+// const currentRecipe = async (req, res) => {
+//   const { user } = req;
+//   const recipe = await recipeService.getRecipeById(req.params.id);
+//   const isRecipeCreator = !!user && user.id === recipe.userId;
 
 module.exports = {
   createRecipe,

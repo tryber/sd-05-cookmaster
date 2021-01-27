@@ -20,12 +20,12 @@ const findById = async (id) =>
     .then((db) => db.collection('recipes').findOne(ObjectId(id)))
     .catch((err) => console.log(err));
 
-const updateRecipe = async (_id, name, ingredients, preparation, userId) => {
+const updateRecipe = async (_id, name, ingredients, preparation, userId) =>
   getConnection()
     .then((db) =>
       db.collection('recipes').updateOne({ _id: ObjectId(id) }, { $set: { _id, name, ingredients, preparation, userId } }))
     .catch((err) => console.log(err));
-        
+
 const deleteRecipe = async (id) =>
   getConnection()
     .then((db) => db.collection('recipes').deleteOne({ _id: Object(id) }))
@@ -35,7 +35,6 @@ module.exports = {
   insertRecipe,
   findAllRecipes,
   findById,
-  findByName,
   updateRecipe,
   deleteRecipe,
 };

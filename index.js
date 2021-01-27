@@ -9,11 +9,12 @@ const app = express();
 
 // app.use(express.json());
 app.use(bodyParser.json());
+
 app.use('/users', userController);
 
 app.use('/login', loginController);
 
-app.use('/recipes', recipeController);
+// app.use('/recipes', recipeController); // algo aqui deu ruim
 
 app.get('/', (_request, response) => {
   response.send();

@@ -6,6 +6,8 @@ const secret = 'master of puppets';
 
 const errorMessage = (message, code) => ({ err: { message, code } });
 
+const getUserByEmail = (email) => userModel.findByEmail(email).then((userData) => userData);
+
 const createUser = async ({ name, email, password }) => {
   if (!name) {
     return errorMessage('Name is required', 'invalid_data');
@@ -27,10 +29,10 @@ const createUser = async ({ name, email, password }) => {
 };
 
 const userLogin = async (email, password) => {
-  console.log('user service:', email);
-  const user = await userModel.findByEmail(email);
+  const user = await getUserByEmail(email);
+  console.log('aqui no service', user);
   if (!user) return errorMessage('Incorrect username or password', 'invalid_data');
-  if (password !== user.password) return errorMessage('Incorrect username or password', 'invalid_data');
+  if (password !== user.password) return errorMessage('Incorrect username or password 2', 'invalid_data');
   const tokenConfig = { expiresIn: '8h', algorithm: 'HS256' };
   const token = jwt.sign({ name: user.name, email, role: user.role }, secret, tokenConfig);
   return { token };

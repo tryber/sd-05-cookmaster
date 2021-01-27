@@ -20,6 +20,7 @@ const addUser = async (name, email, password, role = 'user') =>
 const findByEmail = async (email) =>
   connection()
     .then((db) => db.collection('users').findOne({ email }))
+    .then((result) => result)
     .catch((err) => console.log(err));
 
 const findById = async (id) =>
