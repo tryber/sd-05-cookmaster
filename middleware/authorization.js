@@ -14,7 +14,7 @@ const createToken = (user) => {
 
 // const token = jwt.sign({ payload, role: user.role }, signature, { header });
 
-const verifyJWT = (req, res, next) => {
+const verifyJWT = (token) => (req, res, next) => {
   const auth = req.headers.Authorization;
   if (!auth) return res.status(400).json('Missing token');
   jwt.verify(token, signature, (err, decoded) => {
