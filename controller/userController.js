@@ -7,8 +7,8 @@ const userRoute = Router();
 
 userRoute.post(
   '/', async (req, res) => {
-    console.log('aqui no controller', req.body);
     const user = await userService.createUser(req.body);
+    console.log('aqui no controller', req.body);
     if (!user) res.status(400).json({ message: 'Dados inválidos' });
     res.status(201).json(user);
   },

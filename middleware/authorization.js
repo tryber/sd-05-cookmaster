@@ -13,14 +13,17 @@ const createToken = (user) => {
 
 // const token = jwt.sign({ payload, role: user.role }, signature, { header });
 
-const verifyJWT = (token) => (req, res, next) => {
-  const auth = req.headers.Authorization;
-  if (!auth) return res.status(400).json('Missing token');
-  jwt.verify(token, signature, (err, decoded) => {
-    if (err) return res.status(401).end();
+const verifyJWT = (req, res, next) => {
+  try {
+    const auth = req.headers.authorization;
+    if (!auth) return res.status(400).json('Missing token');
+    jwt.verify(auth, signature);
+    const decoded = jwt.decode(auth);
     req.user = decoded;
-  });
-  next();
+    next();
+  } catch (error) {
+    return res.status(401).res({ 'err.message': 'jwt malformed' });
+  }
 };
 
 module.exports = { createToken, verifyJWT };

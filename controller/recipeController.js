@@ -1,16 +1,17 @@
 const { Router } = require('express');
-const auth = require('../middleware/authorization');
-
+const { verifyJWT } = require('../middleware/authorization');
 const recipeService = require('../service/recipeService');
 
 const recipeRoute = Router();
 
 recipeRoute.post(
-  '/', auth.verifyJWT, async (req, res) => {
+  '/', verifyJWT,
+  async (req, res) => {
+    const { user } = req;
     const { name, ingredients, preparation } = req.body;
-    const recipeCreated = await recipeService.insertRecipe(name, ingredients, preparation);
-    if (!recipeCreated) return res.status(400).json({ message: 'Dados inválidos' });
-    res.status(201).json({ recipeCreated });
+    const recipe = await recipeService.insertRecipe(name, ingredients, preparation, user.email);
+    if (!recipe) return res.status(400).json({ message: 'Dados inválidos' });
+    res.status(201).json({ recipe });
   },
 );
 
@@ -23,7 +24,7 @@ recipeRoute.get(
 );
 
 recipeRoute.get(
-  '/:id', async (_req, res) => {
+  '/:id', async (req, res) => {
     const { id } = req.params;
     const recipe = await recipeService.getRecipeById(id);
     if (!recipe) res.status(400).json({ message: 'No recipe' });
@@ -32,7 +33,7 @@ recipeRoute.get(
 );
 
 recipeRoute.put(
-  '/:id', async (_req, res) => {
+  '/:id', async (req, res) => {
     const { id } = req.params;
     const recipe = await recipeService.editRecipe(id);
     if (!recipe) res.status(400).json({ message: 'No recipe' });
@@ -41,7 +42,7 @@ recipeRoute.put(
 );
 
 recipeRoute.delete(
-  '/:id', async (_req, res) => {
+  '/:id', async (req, res) => {
     const { id } = req.params;
     const recipe = await recipeService.deleteRecipe(id);
     if (!recipe) res.status(400).json({ message: 'No recipe to delete' });

@@ -3,13 +3,14 @@ const userModel = require('../model/userModel');
 
 const errorMessage = (message, code) => ({ err: { message, code } });
 
-const getUserByEmail = (email) => userModel.findByEmail(email).then((userData) => userData);
-
 const insertRecipe = async (name, ingredients, preparation, email) => {
-  const user = await getUserByEmail(email);
-  if (!user) return errorMessage('Must be logged in', 'invalid_data');
   if (!name || !ingredients || !preparation) return errorMessage('All fields must be filled', 'invali_data');
-  return recipesModel.insertRecipe(name, ingredients, preparation);
+  const userData = await userModel.findByEmail(email);
+  if (!userData) return errorMessage('Invalid user', 'invalid_user');
+  const recipeUser = await recipesModel.insertRecipe(name, ingredients, preparation);
+  const { _id: idUser } = userData;
+  recipeUser.userId = idUser;
+  return recipeUser;
 };
 
 const getAllRecipes = async () => recipesModel.findAllRecipes();
