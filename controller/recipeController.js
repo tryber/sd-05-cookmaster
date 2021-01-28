@@ -1,11 +1,12 @@
 const { Router } = require('express');
+const auth = require('../middleware/authorization');
 
 const recipeService = require('../service/recipeService');
 
 const recipeRoute = Router();
 
 recipeRoute.post(
-  '/', async (req, res) => {
+  '/', auth.verifyJWT, async (req, res) => {
     const { name, ingredients, preparation } = req.body;
     const recipeCreated = await recipeService.insertRecipe(name, ingredients, preparation);
     if (!recipeCreated) return res.status(400).json({ message: 'Dados inválidos' });

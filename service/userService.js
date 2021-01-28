@@ -28,27 +28,21 @@ const createUser = async ({ name, email, password }) => {
 };
 
 const userLogin = async (email, password) => {
-  const user = await userModel.findByEmail(email);
-  if (!user) return errorMessage('Incorrect username or password', 'invalid_data');
-  if (password !== user.password) return errorMessage('Incorrect username or password 2', 'invalid_data');
+  const userData = await userModel.findByEmail(email);
+  if (!userData) return errorMessage('Incorrect username or password', 'invalid_data');
+  if (password !== userData.password) return errorMessage('Incorrect username or password 2', 'invalid_data');
   const token = jwt.sign(
     {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
+      name: userData.name,
+      email: userData.email,
+      role: userData.role,
     }, signature, header,
   );
   console.log('aqui no service', token);
   return { token };
 };
 
-// const header = { expiresIn: '8h', algorithm: 'HS256' }
-// const payload = {id, name, role}
-
-
-module.exports = { createUser, userLogin};
-
+module.exports = { createUser, userLogin };
 
 // {
 //   "user": {
