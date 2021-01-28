@@ -1,12 +1,11 @@
 const jwt = require('jsonwebtoken');
 
 const userModel = require('../model/userModel');
-
-const secret = 'master of puppets';
+//payload, secret, header
+const signature = 'master of puppets';
+const header = { expiresIn: '8h', algorithm: 'HS256' };
 
 const errorMessage = (message, code) => ({ err: { message, code } });
-
-const getUserByEmail = (email) => userModel.findByEmail(email).then((userData) => userData);
 
 const createUser = async ({ name, email, password }) => {
   if (!name) {
@@ -29,13 +28,35 @@ const createUser = async ({ name, email, password }) => {
 };
 
 const userLogin = async (email, password) => {
-  const user = await getUserByEmail(email);
-  console.log('aqui no service', user);
+  const user = await userModel.findByEmail(email);
   if (!user) return errorMessage('Incorrect username or password', 'invalid_data');
   if (password !== user.password) return errorMessage('Incorrect username or password 2', 'invalid_data');
-  const tokenConfig = { expiresIn: '8h', algorithm: 'HS256' };
-  const token = jwt.sign({ name: user.name, email, role: user.role }, secret, tokenConfig);
+  const token = jwt.sign(
+    {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    }, signature, header,
+  );
+  console.log('aqui no service', token);
   return { token };
 };
 
-module.exports = { createUser, userLogin };
+// const header = { expiresIn: '8h', algorithm: 'HS256' }
+// const payload = {id, name, role}
+
+
+module.exports = { createUser, userLogin};
+
+
+// {
+//   "user": {
+//       "_id": "6011dc0fd3c1402ee4d68023",
+//       "name": "Teste",
+//       "email": "teste2@gmail.com",
+//       "password": "asasasas",
+//       "role": "user"
+//   },
+//   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdGUiLCJlbWFpbCI6InRlc3RlMkBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTYxMTc4Nzg0MSwiZXhwIjoxNjExODE2NjQxfQ.lsBbNU-nhJzq6JBZGMOzvyiHNNKZ5XgHSot4k2bib3E"
+// }

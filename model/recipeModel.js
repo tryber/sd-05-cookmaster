@@ -2,7 +2,7 @@
 const { ObjectId } = require('mongodb');
 const getConnection = require('./connection');
 
-const insertRecipe = async (name, ingredients, preparation ) =>
+const insertRecipe = async (name, ingredients, preparation) =>
   getConnection()
     .then((db) => db.collection('recipes').insertOne({ name, ingredients, preparation }))
     .then((result) => result.ops[0])
