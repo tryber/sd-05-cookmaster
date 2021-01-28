@@ -1,5 +1,5 @@
 const recipesModel = require('../model/recipeModel');
-const userModel = require('../service/userService');
+const userModel = require('../model/userModel');
 
 const errorMessage = (message, code) => ({ err: { message, code } });
 

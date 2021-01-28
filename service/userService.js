@@ -1,9 +1,5 @@
-const jwt = require('jsonwebtoken');
-
 const userModel = require('../model/userModel');
-//payload, secret, header
-const signature = 'master of puppets';
-const header = { expiresIn: '8h', algorithm: 'HS256' };
+const { createToken } = require('../middleware/authorization');
 
 const errorMessage = (message, code) => ({ err: { message, code } });
 
@@ -31,13 +27,7 @@ const userLogin = async (email, password) => {
   const userData = await userModel.findByEmail(email);
   if (!userData) return errorMessage('Incorrect username or password', 'invalid_data');
   if (password !== userData.password) return errorMessage('Incorrect username or password 2', 'invalid_data');
-  const token = jwt.sign(
-    {
-      name: userData.name,
-      email: userData.email,
-      role: userData.role,
-    }, signature, header,
-  );
+  const token = createToken(userData);
   console.log('aqui no service', token);
   return { token };
 };

@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 // payload, secret, header
-
 const signature = 'master of puppets';
 
 const createToken = (user) => {
@@ -19,7 +18,7 @@ const verifyJWT = (token) => (req, res, next) => {
   if (!auth) return res.status(400).json('Missing token');
   jwt.verify(token, signature, (err, decoded) => {
     if (err) return res.status(401).end();
-    req.user = decoded.user;
+    req.user = decoded;
   });
   next();
 };
