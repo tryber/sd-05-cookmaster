@@ -12,17 +12,17 @@ const insertRecipe = async (name, ingredients, preparation, email) => {
   return recipesModel.insertRecipe(name, ingredients, preparation);
 };
 
-// const getAllRecipes = async () => recipesModel.findAllRecipes();
+const getAllRecipes = async () => recipesModel.findAllRecipes();
 
-// const getRecipeById = async (id) => recipesModel.findById(id);
+const getRecipeById = async (id) => recipesModel.findById(id);
 
-// const editRecipe = async () => recipesModel.updateRecipe();
+const editRecipe = async () => recipesModel.updateRecipe();
 
-// const deleteRecipe = async (id) => recipesModel.deleteRecipe(id);
+const deleteRecipe = async (id) => recipesModel.deleteRecipe(id);
 
 module.exports = { insertRecipe,
-  // getAllRecipes,
-  // getRecipeById,
-  // editRecipe,
-  // deleteRecipe,
+  getAllRecipes,
+  getRecipeById,
+  editRecipe,
+  deleteRecipe,
 };

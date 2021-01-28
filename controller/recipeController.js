@@ -14,15 +14,39 @@ recipeRoute.post(
   },
 );
 
-// const showAllRecipes = async (req, res) => {
-//   const allRecipes = await recipeService.getAllRecipes();
-//   if (!allRecipes) res.status(400).json({ message: 'Didnt work pall'});
-//   res.status(200).json({ allRecipes });
-// };
+recipeRoute.get(
+  '/', async (_req, res) => {
+    const allRecipes = await recipeService.getAllRecipes();
+    if (!allRecipes) res.status(400).json({ message: 'Didnt work pall'});
+    res.status(200).json({ allRecipes });
+  },
+);
 
-// const currentRecipe = async (req, res) => {
-//   const { user } = req;
-//   const recipe = await recipeService.getRecipeById(req.params.id);
-//   const isRecipeCreator = !!user && user.id === recipe.userId;
+recipeRoute.get(
+  '/:id', async (_req, res) => {
+    const { id } = req.params;
+    const recipe = await recipeService.getRecipeById(id);
+    if (!recipe) res.status(400).json({ message: 'No recipe' });
+    res.status(200).json({ recipe });
+  },
+);
+
+recipeRoute.put(
+  '/:id', async (_req, res) => {
+    const { id } = req.params;
+    const recipe = await recipeService.editRecipe(id);
+    if (!recipe) res.status(400).json({ message: 'No recipe' });
+    res.status(200).json({ recipe });
+  },
+);
+
+recipeRoute.delete(
+  '/:id', async (_req, res) => {
+    const { id } = req.params;
+    const recipe = await recipeService.deleteRecipe(id);
+    if (!recipe) res.status(400).json({ message: 'No recipe to delete' });
+    res.status(200).json({ recipe });
+  },
+);
 
 module.exports = recipeRoute;
