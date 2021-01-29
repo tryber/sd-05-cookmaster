@@ -20,10 +20,10 @@ const findById = (id) =>
     .then((db) => db.collection('recipes').findOne(ObjectId(id)))
     .catch((err) => console.log(err));
 
-const updateRecipe = (_id, name, ingredients, preparation, userId) =>
+const updateRecipe = (id, name, ingredients, preparation) =>
   getConnection()
     .then((db) =>
-      db.collection('recipes').updateOne({ _id: ObjectId(id) }, { $set: { _id, name, ingredients, preparation, userId } }))
+      db.collection('recipes').updateOne({ _id: ObjectId(id) }, { $set: { name, ingredients, preparation } }))
     .catch((err) => console.log(err));
 
 const deleteRecipe = (id) =>

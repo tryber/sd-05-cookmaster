@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const recipesModel = require('../model/recipeModel');
 const userModel = require('../model/userModel');
 
@@ -17,13 +18,28 @@ const getAllRecipes = async () => recipesModel.findAllRecipes();
 
 const getRecipeById = async (id) => recipesModel.findById(id);
 
-const editRecipe = async () => recipesModel.updateRecipe();
+const updateRecipe = async (id, name, ingredients, preparation) => {
+  await recipesModel.updateRecipe(id, name, ingredients, preparation);
+  const recipe = recipesModel.findById(id);
+  return recipe;
+};
 
-const deleteRecipe = async (id) => recipesModel.deleteRecipe(id);
+const deleteRecipe = async (id, email) => {
+  if (!ObjectId.isValid(id)) return errorMessage('No matches', 'invalid_data');
+  const recipe = recipesModel.findById(id);
+  if (!recipe) return errorMessage('No matches', 'invalid_data');
+  const user = await userModel.findByEmail(email)
+  const { _is: idUser } = user;
+  if (recipe.user.id === idUser) {
+    return recipesModel.deleteRecipe(id);
+  }
+  if (user.role === 'admin') return recipesModel.deleteRecipe(id);
+  return null;
+};
 
 module.exports = { insertRecipe,
   getAllRecipes,
   getRecipeById,
-  editRecipe,
+  updateRecipe,
   deleteRecipe,
 };
