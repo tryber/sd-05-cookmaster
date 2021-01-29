@@ -28,19 +28,7 @@ const userLogin = async (email, password) => {
   if (!userData) return errorMessage('Incorrect username or password', 'invalid_data');
   if (password !== userData.password) return errorMessage('Incorrect username or password 2', 'invalid_data');
   const token = createToken(userData);
-  console.log('aqui no service', token);
   return { token };
 };
 
 module.exports = { createUser, userLogin };
-
-// {
-//   "user": {
-//       "_id": "6011dc0fd3c1402ee4d68023",
-//       "name": "Teste",
-//       "email": "teste2@gmail.com",
-//       "password": "asasasas",
-//       "role": "user"
-//   },
-//   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdGUiLCJlbWFpbCI6InRlc3RlMkBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTYxMTc4Nzg0MSwiZXhwIjoxNjExODE2NjQxfQ.lsBbNU-nhJzq6JBZGMOzvyiHNNKZ5XgHSot4k2bib3E"
-// }

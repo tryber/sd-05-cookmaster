@@ -25,7 +25,6 @@ const updateRecipe = async (id, name, ingredients, preparation) => {
 };
 
 const deleteRecipe = async (id, email) => {
-  if (!ObjectId.isValid(id)) return errorMessage('No matches', 'invalid_data');
   const recipe = recipesModel.findById(id);
   if (!recipe) return errorMessage('No matches', 'invalid_data');
   const user = await userModel.findByEmail(email)
