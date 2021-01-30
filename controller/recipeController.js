@@ -9,7 +9,7 @@ recipeRoute.post(
   async (req, res) => {
     const { user } = req;
     const { name, ingredients, preparation } = req.body;
-    const recipe = await recipeService.insertRecipe(name, ingredients, preparation, user.email);
+    const recipe = await recipeService.createRecipe(name, ingredients, preparation, user.email);
     if (!recipe) return res.status(400).json({ message: 'Dados inválidos' });
     res.status(201).json({ recipe });
   },
@@ -33,7 +33,8 @@ recipeRoute.get(
 );
 
 recipeRoute.put(
-  '/:id', async (req, res) => {
+  '/:id', verifyJWT,
+  async (req, res) => {
     const { id } = req.params;
     const { name, ingredients, preparation } = req.body;
     const recipe = await recipeService.updateRecipe(id, name, ingredients, preparation);
@@ -43,7 +44,8 @@ recipeRoute.put(
 );
 
 recipeRoute.delete(
-  '/:id', async (req, res) => {
+  '/:id', verifyJWT,
+  async (req, res) => {
     const { id } = req.params;
     const recipe = await recipeService.deleteRecipe(id);
     if (!recipe) res.status(400).json({ message: 'No recipe to delete' });

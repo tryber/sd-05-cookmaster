@@ -3,8 +3,8 @@ const userModel = require('../model/userModel');
 
 const errorMessage = (message, code) => ({ err: { message, code } });
 
-const insertRecipe = async (name, ingredients, preparation, email) => {
-  if (!name || !ingredients || !preparation) return errorMessage('All fields must be filled', 'invali_data');
+const createRecipe = async (name, ingredients, preparation, email) => {
+  if (!name || !ingredients || !preparation) return errorMessage('All fields must be filled', 'invalid_data');
   const userData = await userModel.findByEmail(email);
   if (!userData) return errorMessage('Invalid user', 'invalid_user');
   const recipeUser = await recipesModel.insertRecipe(name, ingredients, preparation);
@@ -35,7 +35,7 @@ const deleteRecipe = async (id, email) => {
   return null;
 };
 
-module.exports = { insertRecipe,
+module.exports = { createRecipe: createRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
