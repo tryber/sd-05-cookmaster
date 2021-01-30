@@ -1,4 +1,12 @@
-const { ObjectId } = require('mongodb');
 const recipesModel = require('../models/recipesModel');
+const throwError = require('../utils/throwError');
 
-module.exports = {};
+const createRecipe = async (name, ingredients, preparation, userId) => {
+  if (!name || !ingredients || !preparation) return throwError(400, 'Invalid entries. Try again.');
+
+  return recipesModel.createRecipe(name, ingredients, preparation, userId);
+};
+
+module.exports = {
+  createRecipe,
+};

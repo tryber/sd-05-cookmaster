@@ -5,14 +5,14 @@ const validateToken = async (req, res, next) => {
     const secret = 'segredo';
     const token = req.headers.authorization;
 
-    if (!token) return res.status(401).json({ message: 'Token não encontrado' });
+    if (!token) return res.status(401).json({ message: 'jwt malformed' });
 
     const decodedPayload = jwt.verify(token, secret);
     req.userData = decodedPayload;
 
     return next();
   } catch (error) {
-    return res.status(401).json({ message: 'Token expirado ou inválido' });
+    return res.status(401).json({ message: 'jwt malformed' });
   }
 };
 
