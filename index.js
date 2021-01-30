@@ -15,9 +15,9 @@ app.use('/images', express.static(path.join(__dirname, 'uploads')));
 
 app.use(bodyParser.json());
 
-app.use('/users', usersController);
+app.use('/', usersController);
 
-app.use('/recipes', recipesController);
+app.use('/', recipesController);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Ouvindo na porta ${PORT}!`));
