@@ -18,4 +18,10 @@ recipesRouter.post('/recipes', validateToken, rescue(async (req, res) => {
   res.status(201).json({ recipe });
 }));
 
+recipesRouter.get('/recipes', rescue(async (req, res) => {
+  const allRecipes = await recipesService.getAllRecipes();
+
+  res.status(200).json(allRecipes);
+}));
+
 module.exports = recipesRouter;
