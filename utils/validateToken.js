@@ -5,7 +5,7 @@ const validateToken = async (req, res, next) => {
     const secret = 'segredo';
     const token = req.headers.authorization;
 
-    if (!token) return res.status(401).json({ message: 'jwt malformed' });
+    if (!token) return res.status(401).json({ message: 'missing auth token' });
 
     const decodedPayload = jwt.verify(token, secret);
     req.userData = decodedPayload;

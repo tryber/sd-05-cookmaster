@@ -35,4 +35,17 @@ recipesRouter.get('/recipes/:id', rescue(async (req, res) => {
   res.status(200).json(recipe);
 }));
 
+recipesRouter.put('/recipes/:id', validateToken, rescue(async (req, res) => {
+  const { id } = req.params;
+  const { name, ingredients, preparation } = req.body;
+  const { _id: userId } = req.userData;
+  const editRecipe = await recipesService.editRecipe(id, name, ingredients, preparation);
+
+  if (editRecipe.error) {
+    return res.status(editRecipe.error.code).json({ message: editRecipe.error.message });
+  }
+
+  res.status(200).json({ _id: id, userId, name, ingredients, preparation });
+}));
+
 module.exports = recipesRouter;
