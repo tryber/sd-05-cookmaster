@@ -24,4 +24,15 @@ recipesRouter.get('/recipes', rescue(async (req, res) => {
   res.status(200).json(allRecipes);
 }));
 
+recipesRouter.get('/recipes/:id', rescue(async (req, res) => {
+  const { id } = req.params;
+  const recipe = await recipesService.getRecipeById(id);
+
+  if (recipe.error) {
+    return res.status(recipe.error.code).json({ message: recipe.error.message });
+  }
+
+  res.status(200).json(recipe);
+}));
+
 module.exports = recipesRouter;
