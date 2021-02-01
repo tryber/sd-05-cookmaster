@@ -1,7 +1,7 @@
 const connectionDB = require('./connection');
 const { signUp, verifyEmail } = require('./usersModel');
 const { login, findUser } = require('./loginModel');
-const { createRecipes, getAllRecipes } = require('./recipesModel');
+const { createRecipes, getAllRecipes, getRecipeById } = require('./recipesModel');
 
 module.exports = {
   connectionDB,
@@ -11,4 +11,5 @@ module.exports = {
   findUser,
   createRecipes,
   getAllRecipes,
+  getRecipeById,
 };

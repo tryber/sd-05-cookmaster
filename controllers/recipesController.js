@@ -1,6 +1,7 @@
+const { ObjectID } = require('mongodb');
 const { Router } = require('express');
 const jwt = require('jsonwebtoken');
-const { createRecipes, getAllRecipes } = require('../models');
+const { createRecipes, getAllRecipes, getRecipeById } = require('../models');
 const checkSRecipe = require('../middlewares/receipesMiddleware');
 
 const recipesRouter = Router();
@@ -32,10 +33,28 @@ recipesRouter.post('/', checkSRecipe, async (req, res) => {
   }
 });
 
-recipesRouter.get('/', async (req, res) => {
+recipesRouter.get('/', async (_req, res) => {
   const allRecipes = await getAllRecipes();
 
   return res.status(200).json(allRecipes);
+});
+
+recipesRouter.get('/:id', async (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) {
+    return res.status(404).json({
+      message: 'recipe not found',
+    });
+  }
+
+  const recipeById = await getRecipeById(req.params.id);
+
+  if (!recipeById) {
+    return res.status(404).json({
+      message: 'recipe not found',
+    });
+  }
+
+  return res.status(200).json(recipeById);
 });
 
 module.exports = recipesRouter;
