@@ -24,7 +24,18 @@ const login = async (email, password) => {
   return user;
 };
 
+const createAdmin = async (name, email, password, userRole) => {
+  const findIfUserAlreadyExists = await usersModel.getUserByEmail(email);
+
+  if (findIfUserAlreadyExists) return throwError(409, 'Email already registered');
+
+  if (userRole !== 'admin') return throwError(403, 'Only admins can register new admins');
+
+  return usersModel.createUser(name, email, password, 'admin');
+};
+
 module.exports = {
   createUser,
   login,
+  createAdmin,
 };
