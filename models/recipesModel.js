@@ -29,9 +29,19 @@ const editRecipe = async (id, name, ingredients, preparation) => {
   return connection.updateOne({ _id: ObjectId(id) }, { $set: { name, ingredients, preparation } });
 };
 
+const deleteRecipe = async (id) => {
+  const connection = await getCollection('recipes');
+  const getRecipe = await getRecipeById(id);
+
+  if (!getRecipe) return null;
+
+  return connection.deleteOne({ _id: ObjectId(id) });
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   editRecipe,
+  deleteRecipe,
 };

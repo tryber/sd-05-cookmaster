@@ -48,4 +48,17 @@ recipesRouter.put('/recipes/:id', validateToken, rescue(async (req, res) => {
   res.status(200).json({ _id: id, userId, name, ingredients, preparation });
 }));
 
+recipesRouter.delete('/recipes/:id', validateToken, rescue(async (req, res) => {
+  const { id } = req.params;
+  const { role, _id: userId } = req.userData;
+
+  const deleteRecipe = await recipesService.deleteRecipe(id, role, userId);
+
+  if (deleteRecipe.error) {
+    return res.status(deleteRecipe.error.code).json({ message: deleteRecipe.error.message });
+  }
+
+  res.status(204).json();
+}));
+
 module.exports = recipesRouter;

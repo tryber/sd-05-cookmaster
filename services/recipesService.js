@@ -19,11 +19,18 @@ const getRecipeById = async (id) => {
 
 const editRecipe = async (id, name, ingredients, preparation) => {
   const recipe = await recipesModel.editRecipe(id, name, ingredients, preparation);
-  console.log(recipe);
 
   if (!recipe) return throwError(404, 'recipe not found');
 
   return recipe;
+};
+
+const deleteRecipe = async (id, userRole, userId) => {
+  if (userRole !== 'admin' && toString(userId) !== toString(id)) {
+    return throwError(401, 'user not authenticated or not an admin');
+  }
+
+  return recipesModel.deleteRecipe(id);
 };
 
 module.exports = {
@@ -31,4 +38,5 @@ module.exports = {
   getAllRecipes,
   getRecipeById,
   editRecipe,
+  deleteRecipe,
 };
