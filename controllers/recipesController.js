@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const jwt = require('jsonwebtoken');
-const { createRecipes } = require('../models');
+const { createRecipes, getAllRecipes } = require('../models');
 const checkSRecipe = require('../middlewares/receipesMiddleware');
 
 const recipesRouter = Router();
@@ -30,6 +30,12 @@ recipesRouter.post('/', checkSRecipe, async (req, res) => {
     // console.log(error)
     res.status(401).json({ message: 'jwt malformed' });
   }
+});
+
+recipesRouter.get('/', async (req, res) => {
+  const allRecipes = await getAllRecipes();
+
+  return res.status(200).json(allRecipes);
 });
 
 module.exports = recipesRouter;

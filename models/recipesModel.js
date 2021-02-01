@@ -8,4 +8,7 @@ const createRecipes = async (recipe) => connectionDB('recipes')
   }
   ));
 
-module.exports = { createRecipes };
+const getAllRecipes = async () => connectionDB('recipes')
+  .then((db) => db.find({}).toArray());
+
+module.exports = { createRecipes, getAllRecipes };
