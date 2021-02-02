@@ -1,9 +1,20 @@
+const multer = require('multer');
 const { Router } = require('express');
 const rescue = require('express-rescue');
 const recipesService = require('../services/recipesService');
 const validateToken = require('../utils/validateToken');
 
 const recipesRouter = Router();
+
+const storage = multer.diskStorage({
+  destination: 'uploads',
+  filename: (req, _file, callback) => {
+    const { id } = req.params;
+    callback(null, `${id}.jpeg`);
+  },
+});
+
+const upload = multer({ storage });
 
 recipesRouter.post('/recipes', validateToken, rescue(async (req, res) => {
   const { name, ingredients, preparation } = req.body;
@@ -59,6 +70,14 @@ recipesRouter.delete('/recipes/:id', validateToken, rescue(async (req, res) => {
   }
 
   res.status(204).json();
+}));
+
+recipesRouter.put('/recipes/:id/image', validateToken, upload.single('image'), rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const imageRecipe = await recipesService.uploadImage(id);
+
+  return res.status(200).json(imageRecipe);
 }));
 
 module.exports = recipesRouter;

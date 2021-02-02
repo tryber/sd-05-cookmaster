@@ -33,10 +33,19 @@ const deleteRecipe = async (id, userRole, userId) => {
   return recipesModel.deleteRecipe(id);
 };
 
+const uploadImage = async (id, userRole, userId) => {
+  if (userRole !== 'admin' && toString(userId) !== toString(id)) {
+    return throwError(401, 'user not authenticated or not an admin');
+  }
+
+  return recipesModel.uploadImage(id);
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  uploadImage,
 };

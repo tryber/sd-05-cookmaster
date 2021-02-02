@@ -38,10 +38,23 @@ const deleteRecipe = async (id) => {
   return connection.deleteOne({ _id: ObjectId(id) });
 };
 
+const uploadImage = async (id) => {
+  const path = `localhost:3000/images/${id}.jpeg`;
+  const connection = await getCollection('recipes');
+  const getRecipe = await getRecipeById(id);
+
+  if (!getRecipe) return null;
+
+  await connection.updateOne({ _id: ObjectId(id) }, { $set: { image: path } });
+
+  return { image: path };
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  uploadImage,
 };
