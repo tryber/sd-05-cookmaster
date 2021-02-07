@@ -3,12 +3,12 @@ const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 
 const loginRouter = Router();
-const { signUp, findUser } = require('../models');
+const { findUser } = require('../models');
 
 const secret = 'secretPassword';
 
 const jwtConfig = {
-  expiresIn: '15m',
+  expiresIn: '15d',
   algorithm: 'HS256',
 };
 
@@ -21,14 +21,16 @@ loginRouter.post('/', async (req, res) => {
       return res.status(401).json({ message: 'All fields must be filled' });
     }
 
-    const user = await findUser({ email });
+    const user = await findUser({ email }); // pegando o user no banco a partir do email
 
-    if (!user) {
+    if (!user || password !== user.password) {
       return res.status(401).json({ message: 'Incorrect username or password' });
     }
 
-    const userFake = await signUp(email);
-    const { password: _, ...userWithoutPassword } = userFake;
+    // const userFake = await signUp(email);
+    // const { password: _, ...userWithoutPassword } = user
+
+    delete user.password;
 
     const payload = {
       // Issuer => Quem emitiu o token
@@ -37,7 +39,7 @@ loginRouter.post('/', async (req, res) => {
       aud: 'identify',
       // Subject => A quem pertence esse token
       // sub: user._id,
-      userData: userWithoutPassword,
+      user,
     };
 
     const token = jwt.sign(payload, secret, jwtConfig);

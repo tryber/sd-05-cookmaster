@@ -15,4 +15,12 @@ const getAllRecipes = async () => connectionDB('recipes')
 const getRecipeById = async (id) => connectionDB('recipes')
   .then((db) => db.findOne({ _id: ObjectID(id) }));
 
-module.exports = { createRecipes, getAllRecipes, getRecipeById };
+const editRecipeById = async (id, recipe) => connectionDB('recipes')
+  .then((db) => db.updateOne({ _id: ObjectID(id) }, { $set: { recipe } }));
+
+module.exports = {
+  createRecipes,
+  getAllRecipes,
+  getRecipeById,
+  editRecipeById,
+};
