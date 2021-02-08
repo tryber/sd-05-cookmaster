@@ -6,6 +6,7 @@ const {
   getAllRecipes,
   getRecipeById,
   editRecipeById,
+  deleteRecipe,
 } = require('./recipesModel');
 
 module.exports = {
@@ -18,4 +19,5 @@ module.exports = {
   getAllRecipes,
   getRecipeById,
   editRecipeById,
+  deleteRecipe,
 };

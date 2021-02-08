@@ -6,6 +6,7 @@ const {
   getAllRecipes,
   getRecipeById,
   editRecipeById,
+  deleteRecipe,
 } = require('../models');
 const checkSRecipe = require('../middlewares/receipesMiddleware');
 const tokenMiddleware = require('../middlewares/tokenMiddleware');
@@ -60,6 +61,20 @@ recipesRouter.put('/:id', tokenMiddleware, async (req, res) => {
     return res.status(200).json(changedRecipe);
   } catch (error) {
     res.status(500).json({ message: console.log(error) });
+  }
+});
+
+recipesRouter.delete('/:id', tokenMiddleware, async (req, res) => {
+  try {
+    const recipeById = await getRecipeById(req.params.id);
+    if (!recipeById) {
+      return res.status(401).json({ message: 'missing auth token' });
+    }
+
+    await deleteRecipe(req.params.id);
+    return res.status(204).json();
+  } catch (error) {
+    return res.status(500).json(error);
   }
 });
 
