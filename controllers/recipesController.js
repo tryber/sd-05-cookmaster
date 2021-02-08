@@ -5,7 +5,7 @@ const {
   createRecipes,
   getAllRecipes,
   getRecipeById,
-//  editRecipeById,
+  editRecipeById,
 } = require('../models');
 const checkSRecipe = require('../middlewares/receipesMiddleware');
 const tokenMiddleware = require('../middlewares/tokenMiddleware');
@@ -50,30 +50,17 @@ recipesRouter.get('/:id', async (req, res) => {
   return res.status(200).json(recipeById);
 });
 
-// recipesRouter.put('/:id', async (req, res) => {
-//   try {
-//     const secret = 'secretPassword';
-//     const token = req.headers.authorization;
-//     const tokenValidation = jwt.verify(token, secret);
-
-//     const { name, ingredients, preparation, userId } = req.body;
-
-//     const recipe = await createRecipes({ name, ingredients, preparation, userId });
-
-//     if (tokenValidation) {
-//       return res.status(201).json(recipe);
-//     }
-
-//     if (!token) {
-//       return res.status(401).json({
-//         message: 'missing auth token',
-//       });
-//     }
-//   } catch (error) {
-
-//     res.status(401).json({ message: 'jwt malformed' });
-//   }
-
-// });
+recipesRouter.put('/:id', tokenMiddleware, async (req, res) => {
+  try {
+    const { name, ingredients, preparation, userId } = req.body;
+    const { id } = req.params;
+    // const { _id: userId } = req.user;
+    const payload = { name, ingredients, preparation };
+    const changedRecipe = await editRecipeById(id, payload, userId);
+    return res.status(200).json(changedRecipe);
+  } catch (error) {
+    res.status(500).json({ message: console.log(error) });
+  }
+});
 
 module.exports = recipesRouter;
