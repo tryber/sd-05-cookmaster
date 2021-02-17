@@ -11,4 +11,4 @@ const validateEmail = (email) => {
 module.exports = {
   getter,
   validateEmail,
-}
+};
