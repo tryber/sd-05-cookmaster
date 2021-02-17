@@ -1,43 +1,21 @@
-const recipesModel = require('../model/recipeModel');
-const userModel = require('../model/userModel');
+const recipeModel = require('../model/recipeModel');
+const errorMessage = (msg) => ({ message: msg });
 
-const errorMessage = (message, code) => ({ err: { message, code } });
-
-const createRecipe = async (name, ingredients, preparation, email) => {
-  if (!name || !ingredients || !preparation) return errorMessage('All fields must be filled', 'invalid_data');
-  const userData = await userModel.findByEmail(email);
-  if (!userData) return errorMessage('Invalid user', 'invalid_user');
-  const recipeUser = await recipesModel.insertRecipe(name, ingredients, preparation);
-  const { _id: idUser } = userData;
-  recipeUser.userId = idUser;
-  return recipeUser;
+const checkRecipesForm = async (req, res, next) => {
+  const { name, ingredients, preparation } = req.body;
+  if (!name || !ingredients || !preparation) return res.status(400).json(errorMessage('Invalid entries. Try again'));
+  next();
 };
 
-const getAllRecipes = async () => recipesModel.findAllRecipes();
-
-const getRecipeById = async (id) => recipesModel.findById(id);
-
-const updateRecipe = async (id, name, ingredients, preparation) => {
-  await recipesModel.updateRecipe(id, name, ingredients, preparation);
-  const recipe = recipesModel.findById(id);
-  return recipe;
+const checkIdUser = async (req, res, next) => {
+  const { id } = req.params;
+  const recipe = await recipeModel.getRecipeById(id);
+  if (!recipe) return res.status(404).json(errorMessage('Recipe not found'));
+  req.recipe = recipe;
+  next();
 };
 
-const deleteRecipe = async (id, email) => {
-  const recipe = recipesModel.findById(id);
-  if (!recipe) return errorMessage('No matches', 'invalid_data');
-  const user = await userModel.findByEmail(email);
-  const { _is: idUser } = user;
-  if (recipe.user.id === idUser) {
-    return recipesModel.deleteRecipe(id);
-  }
-  if (user.role === 'admin') return recipesModel.deleteRecipe(id);
-  return null;
-};
-
-module.exports = { createRecipe: createRecipe,
-  getAllRecipes,
-  getRecipeById,
-  updateRecipe,
-  deleteRecipe,
+module.exports = {
+  checkRecipesForm,
+  checkIdUser,
 };

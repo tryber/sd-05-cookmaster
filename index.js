@@ -7,7 +7,7 @@ const recipeController = require('./controller/recipeController');
 
 const app = express();
 
-// app.use(express.json());
+app.use(express.json());
 app.use(bodyParser.json());
 
 app.use('/users', userController);

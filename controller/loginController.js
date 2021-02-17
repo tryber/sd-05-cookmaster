@@ -1,15 +1,17 @@
 /* eslint-disable import/no-unresolved */
 const { Router } = require('express');
-// const rescue = require('express-rescue');
-const userService = require('../service/userService');
+const loginService = require('../service/loginService');
+const auth = require('../middleware/authorization');
 
 const userRoute = Router();
 
-userRoute.post('/', async (req, res) => {
-  const { email, password } = req.body;
-  const login = await userService.userLogin(email, password);
-  if (login.err) return res.status(400).json({ message: 'dados inválidos' }); // verificar menssagem
-  res.status(201).json(login);
+// NÃO MUDAR
+userRoute.post('/', loginService.validateLogin, async (req, res) => {
+  const { email } = req.body;
+  console.log(req.body);
+  const token = await auth.createToken(email);
+  if (!token) return res.status(502).json({ message: 'Bad Gateway' }); // verificar menssagem
+  return res.status(200).json(token);
 });
 
 module.exports = userRoute;

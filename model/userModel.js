@@ -1,37 +1,27 @@
-/* eslint-disable no-undef */
-const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
-const getUsers = async () =>
-  connection()
-    .then((db) => db.collection('users').find().toArray())
-    .then((users) =>
-      users.map(({ _id, name, email, password, role }) => ({
-        id: _id, name, email, password, role,
-      })))
-    .catch((err) => err);
+const createUser = async ({ name, email, password, role = 'user' }) => {
+  try {
+    const db = await connection();
+    const userInserted = await db.collection('users').insertOne({ name, email, password, role });
+    console.log(userInserted);
+    return { user: userInserted.ops[0] };
+  } catch (err) {
+    console.error('createUserModel', err.message);
+  }
+};
 
-const addUser = async (name, email, password, role = 'user') =>
-  connection()
-    .then((db) => db.collection('users')
-      .insertOne({ name, email, password, role })
-      .then((result) => result.ops[0])
-      .catch((err) => console.log(err)));
-
-const findByEmail = async (email) =>
-  connection()
-    .then((db) => db.collection('users').findOne({ email }))
-    .then((result) => result)
-    .catch((err) => console.log(err));
-
-const findById = async (id) =>
-  connection()
-    .then((db) => db.collection('products').findOne(ObjectId(id)))
-    .catch((err) => console.log(err));
+const getUserMail = async (email) => {
+  try {
+    const db = await connection();
+    const user = await db.collection('users').findOne({ email });
+    return user;
+  } catch (err) {
+    console.error('getUserEmail', err.message);
+  }
+};
 
 module.exports = {
-  getUsers,
-  addUser,
-  findByEmail,
-  findById,
+  createUser,
+  getUserMail,
 };
