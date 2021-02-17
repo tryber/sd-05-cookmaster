@@ -15,7 +15,7 @@ const createUserService = async (body) => {
   }
 
   if (!name || !email || !password || !emailIsValid(email)) {
-    return { error: true, message: 'Invalid entries. Try again' };
+    return { error: true, message: 'Invalid entries. Try again.' };
   }
 
   return model.createUserModel(body);
