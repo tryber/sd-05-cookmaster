@@ -4,7 +4,7 @@ const emailValida = require('../middlewares/emailValidation');
 
 const create = async (name, email, password) => {
   const emailExists = await model.getByEmail({ email });
-  const validaEmail = emailValida.validaEmail(email);
+  const validateEmail = emailValida.validaEmail(email);
   if (!name || !email || !password) {
     return {
       error: true,
@@ -21,7 +21,7 @@ const create = async (name, email, password) => {
       statusCode: 409,
     };
   }
-  if (!validaEmail) {
+  if (!validateEmail) {
     return {
       error: true,
       code: 'invalid_data',

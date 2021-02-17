@@ -11,10 +11,10 @@ users.post('/', async (req, res) => {
     if (newUser.error) {
       return res.status(newUser.statusCode).json({ message: newUser.message });
     }
-    return res.status(201).json(newUser);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Tá errado!!!' });
+    return res.status(201).json({ user: newUser });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Algo deu errado' });
   }
 });
 
