@@ -13,7 +13,7 @@ rota.post(
       return next(createNewUser);
     }
     return res.status(201).json({ user: createNewUser });
-  });
+  }),
 );
 
 module.exports = rota;

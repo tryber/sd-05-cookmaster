@@ -8,9 +8,9 @@ let connection;
 
 const getCollection = async (collectionName) => {
   connection = connection || (await MongoClient.connect(MONGO_DB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }));
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }));
 
   return connection.db(DB_NAME).collection(collectionName);
 };
