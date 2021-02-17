@@ -10,11 +10,15 @@ const createUserService = async (body) => {
   const { name, email, password } = body;
   const emailService = await model.emailModel(email);
 
+  if (emailService) {
+    throw { message: 'Email already registered' };
+  }
+
   if (!name || !email || !password || !emailIsValid(email)) {
     throw { message: 'Invalid entries. Try again' };
   }
 
-  return model.create(body);
+  return model.createUserModel(body);
 };
 
 module.exports = {
