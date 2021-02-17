@@ -27,7 +27,7 @@ const getRecipeById = async (id) => {
     const recipe = await db.collection('recipes').findOne(ObjectId(id));
     return recipe;
   } catch (err) {
-    console.err(err.message);
+    console.log(err.message);
   }
 };
 
@@ -37,7 +37,7 @@ const updateRecipe = async (id, name, ingredients, preparation) => {
     const recipe = await db.collection('recipes').updateOne({ _id: ObjectId(id) }, { $set: { name, ingredients, preparation } });
     return recipe;
   } catch (err) {
-    console.err(err.message);
+    console.log(err.message);
   }
 };
 
