@@ -1,7 +1,7 @@
 const { getter } = require('../helpers/functions');
-const createUser = require('../models/createUser');
+const { createUser } = require('../models/createUser');
 
-const createUserController = async (name, email, password) =>
+const createUserService = async (name, email, password) =>
   createUser(name, email, password)
     .then((user) => getter({
       _id: user.insertedId,
@@ -11,4 +11,4 @@ const createUserController = async (name, email, password) =>
       role: user.ops[0].role,
     }));
 
-module.exports = createUserController;
+module.exports = createUserService;

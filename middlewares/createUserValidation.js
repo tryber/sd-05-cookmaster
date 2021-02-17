@@ -1,26 +1,26 @@
-const { validateEmail } = require('../helpers/functions');
+const { validateEmail, checkEmail } = require('../helpers/functions');
 
-const createUserValidation = (req, res, next) => {
+const createUserValidation = async (req, res, next) => {
   const { name, email, password } = req.body;
 
   if (!name) {
-    res.status(400).json({ message: 'Invalid entries. Try again.' });
+    return res.status(400).json({ message: 'Invalid entries. Try again.' });
   }
 
   if (!email) {
-    res.status(400).json({ message: 'Invalid entries. Try again.' });
+    return res.status(400).json({ message: 'Invalid entries. Try again.' });
   }
 
   if (!validateEmail(email)) {
-    res.status(400).json({ message: 'Invalid entries. Try again.' });
+    return res.status(400).json({ message: 'Invalid entries. Try again.' });
   }
 
   if (!password) {
-    res.status(400).json({ message: 'Invalid entries. Try again.' });
+    return res.status(400).json({ message: 'Invalid entries. Try again.' });
   }
 
-  if (!email) {
-    res.status(409).json({ message: 'Email already registered' });
+  if (await checkEmail(email)) {
+    return res.status(409).json({ message: 'Email already registered' });
   }
 
   next();
