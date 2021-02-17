@@ -32,7 +32,7 @@ login.post(
 
     const token = jwt.sign(payload, senha, config);
 
-    res.status(200).json({ token });
+    return res.status(200).json({ token });
   }),
 );
 
