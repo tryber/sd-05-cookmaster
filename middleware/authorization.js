@@ -27,7 +27,6 @@ const verifyJWT = (required = true) => (req, res, next) => {
     if (!auth) return res.status(400).json(errorMessage('Missing auth token'));
     jwt.verify(auth, signature);
     const decoded = jwt.decode(auth);
-    console.log(decoded);
     req.user = decoded;
     next();
   } catch (error) {

@@ -5,7 +5,6 @@ const auth = require('../middleware/authorization');
 
 const userRoute = Router();
 
-// NÃO MUDAR
 userRoute.post('/', loginService.validateLogin, async (req, res) => {
   const { email } = req.body;
   console.log(req.body);

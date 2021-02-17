@@ -2,8 +2,8 @@ const { Router } = require('express');
 
 const recipeModel = require('../model/recipeModel');
 const recipeService = require('../service/recipeService');
-
 const auth = require('../middleware/authorization');
+const upload = require('../service/imageService');
 
 const recipeRoute = Router();
 
@@ -59,6 +59,30 @@ recipeRoute.delete(
       return res.status(204).json();
     }
     return res.status(401).json({ message: 'You cant deletee this recipe.' });
+  },
+);
+
+recipeRoute.put(
+  '/:id/image/',
+  recipeService.checkRecipesForm,
+  auth.verifyJWT,
+  upload.single('image'), // multer é um middleware
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const recipe = await recipeModel.getRecipeById(id);
+
+      const destination = `localhost:3000/images/${id}.jpeg`;
+
+      await recipeModel.uploadImage(id, destination);
+
+      const updatedRecipe = { ...recipe, image: destination };
+      res.status(200).json(updatedRecipe);
+    } catch (_err) {
+      res.status(501).json({
+        message: 'Failed to upload image',
+      });
+    }
   },
 );
 
