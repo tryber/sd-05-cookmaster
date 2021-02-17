@@ -14,7 +14,7 @@ router.post(
 	async (req, res) => {
 		const { name, email, password, role } = req.body;
 		const addUser = await userService.createUser(name, email, password, role);
-				// if (!addUser) return res.status(400).json({ message: 'User was not created' });
+		// if (!addUser) return res.status(400).json({ message: 'User was not created' });
 		res.status(201).json({ user: addUser });
 	},
 );
