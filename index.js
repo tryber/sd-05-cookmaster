@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const userController = require('./controller/UserController');
+
 const erros = require('./middleware/error');
 const app = express();
 
