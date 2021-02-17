@@ -6,4 +6,3 @@ const validaEmail = (email) => {
 module.exports = {
   validaEmail,
 };
-
