@@ -16,4 +16,8 @@ module.exports = async (err, _req, res, _next) => {
   if (err.message === 'Incorrect email or password') {
     return res.status(401).json(secondError);
   }
+
+  if (err.message === 'jwt malformed') {
+    res.status(401).json(errorWithoutError);
+  }
 };
