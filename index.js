@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 
 const usersController = require('./controllers/usersController');
 
+const loginController = require('./controllers/loginController');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -14,6 +16,8 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/users', usersController);
+
+app.use('/login', loginController);
 
 const PORT = 3000;
 
