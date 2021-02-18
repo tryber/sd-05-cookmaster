@@ -8,9 +8,9 @@ const upload = require('../service/imageService');
 const recipeRoute = Router();
 
 recipeRoute.post(
-  '/', verifyJWT(), checkRecipeForm,
+  '/', checkRecipeForm, verifyJWT,
   async (req, res) => {
-    const { _id } = req.user;
+    const { _id } = req.payload;
     const { name, ingredients, preparation } = req.body;
     const recipe = await recipeModel.createRecipe({ name, ingredients, preparation, userId: _id });
     if (!recipe) return res.status(400).json({ message: 'Something went wrong. Try again.' });
@@ -29,7 +29,7 @@ recipeRoute.get(
 
 // foi
 recipeRoute.get(
-  '/:id', verifyJWT(),
+  '/:id', verifyJWT,
   async (req, res) => {
     const { id } = req.params;
     const recipe = await recipeModel.getRecipeById(id);
@@ -39,7 +39,7 @@ recipeRoute.get(
 );
 
 recipeRoute.put(
-  '/:id', checkRecipeId, verifyJWT(),
+  '/:id', checkRecipeId, verifyJWT,
   async (req, res) => {
     const { id } = req.params;
     const { role, _id } = req.user;
@@ -55,7 +55,7 @@ recipeRoute.put(
 );
 
 recipeRoute.delete(
-  '/:id', verifyJWT(),
+  '/:id', verifyJWT,
   async (req, res) => {
     const { id } = req.params;
     const { role, _id } = req.user;
