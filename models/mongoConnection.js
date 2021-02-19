@@ -12,4 +12,4 @@ const getConnection = async (collectionName) => {
     useUnifiedTopology: true }));
   return connection.db(DB_NAME).collection(collectionName);
 };
-module.exports = getConnection;
+module.exports = { getConnection };
