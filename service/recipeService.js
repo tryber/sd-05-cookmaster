@@ -28,6 +28,9 @@ const createRecipeService = async (req) => {
   }
 };
 
+const showRecipeService = async () => model.showRecipeModel();
+
 module.exports = {
   createRecipeService,
+  showRecipeService,
 };
