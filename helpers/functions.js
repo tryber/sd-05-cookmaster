@@ -1,4 +1,4 @@
-const { findEmail } = require('../models/createUser');
+const findEmail = require('../models/utils');
 
 const getter = (data) => {
   const element = data;

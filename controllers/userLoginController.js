@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { findEmail } = require('../models/createUser');
+const findEmail = require('../models/utils');
 
 const secret = 'seusecretdetoken';
 
@@ -10,7 +10,6 @@ const userLoginController = async (req, res) => {
     const user = await findEmail(email);
     delete user.name;
     delete user.password;
-    console.log(user);
 
     const jwtConfig = {
       expiresIn: '7d',

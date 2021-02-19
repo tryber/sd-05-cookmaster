@@ -1,6 +1,7 @@
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const findEmail = require('../models/utils');
 
-// const segredo = 'seusecretdetoken';
+const segredo = 'seusecretdetoken';
 
 const authorization = async (req, res, next) => {
   const token = req.headers.authorization;
@@ -10,20 +11,20 @@ const authorization = async (req, res, next) => {
   }
 
   try {
-    //   const decoded = jwt.verify(token, segredo);
-    //   const user = await model.findUser(decoded.data.username);
+    const decoded = jwt.verify(token, segredo);
+    const user = await findEmail(decoded.data.email);
 
-    //   if (!user) {
-    //     return res
-    //       .status(401)
-    //       .json({ message: 'Erro ao procurar usuário do token.' });
-    //   }
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: 'jwt malformed' });
+    }
 
-    //   req.user = user;
+    req.user = user;
 
-    next();
+    return next();
   } catch (err) {
-    return res.status(401).json({ message: 'Erro: Seu token é inválido' });
+    return res.status(401).json({ message: 'jwt malformed' });
   }
 };
 

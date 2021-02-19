@@ -1,5 +1,5 @@
 const { getter } = require('../helpers/functions');
-const { createUser } = require('../models/createUser');
+const createUser = require('../models/createUser');
 
 const createUserService = async (name, email, password) =>
   createUser(name, email, password)

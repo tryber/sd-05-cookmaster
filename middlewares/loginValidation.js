@@ -1,4 +1,4 @@
-const { findEmail } = require('../models/createUser');
+const findEmail = require('../models/utils');
 
 const loginValidation = async (req, res, next) => {
   try {
@@ -20,7 +20,7 @@ const loginValidation = async (req, res, next) => {
 
     return next();
   } catch (e) {
-    return res.status(500).json({ message: 'Erro interno', error: e });
+    return res.status(500).json({ message: 'Erro', error: e });
   }
 };
 
