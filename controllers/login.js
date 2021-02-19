@@ -1,22 +1,21 @@
 const express = require('express');
-const rescue = require('express-rescue');
-// VERIFICAR NOVO USUARIO
+
 const router = express.Router();
 
-const erroMsg = require('../middlewares/erroResponse');
+const loginService = require('../services/loginServices');
+const createToken = require('../auth/createJWT');
 
-// Endpoint para o login de usuários
+// Endpoint para fazer o login do usuário
 
-// router.post(
-//   '/login',
-//   // checkUser,
-//   rescue(async (req, res) => {
-//     const { email, password } = req.body;
-//     // Verifica se é possível fazer o login
-//     const user = await LOGINSERVICES.login(email, password);
-//     if (!user) return res.status(400).json({ message: 'Unable to sign in' });
-//     //   Gera e retorna o token
-//     const token = await newToken(user);
-//     res.status(200).json({ token });
-//   }),
-// );
+router.post(
+  '/login',
+  async (req, res) => {
+    const { email, password } = req.body;
+    const logUser = await loginService.login(email, password);
+    if (!logUser.isError) { return res.status(logUser.status).json({ message: logUser.message }); }
+    const tokenUser = await createToken(logUser);
+    res.status(201).json({ tokenUser });
+  },
+);
+
+module.exports = router;
