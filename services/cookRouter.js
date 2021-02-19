@@ -6,6 +6,7 @@ const userLoginController = require('../controllers/userLoginController');
 const createRecipeController = require('../controllers/createRecipeController');
 const getRecipesController = require('../controllers/getRecipesController');
 const getRecipeByIdController = require('../controllers/getRecipeByIdController');
+const editRecipeController = require('../controllers/editRecipeController');
 
 const cookRouter = express.Router();
 
@@ -18,5 +19,6 @@ cookRouter.post('/login', middlewares.loginValidation, userLoginController);
 cookRouter.post('/recipes', middlewares.authorization, middlewares.createRecipeValidation, createRecipeController);
 cookRouter.get('/recipes', getRecipesController);
 cookRouter.get('/recipes/:id', getRecipeByIdController);
+cookRouter.put('/recipes/:id', middlewares.authorization, editRecipeController);
 
 module.exports = cookRouter;

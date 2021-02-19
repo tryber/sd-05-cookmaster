@@ -7,7 +7,7 @@ const authorization = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(400).json({ error: 'Token não encontrado ou informado' });
+    return res.status(401).json({ message: 'missing auth token' });
   }
 
   try {
