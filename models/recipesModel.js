@@ -16,13 +16,13 @@ const getRecipeById = async (id) => connectionDB('recipes')
   .then((db) => db.findOne({ _id: ObjectID(id) }));
 
 const editRecipeById = async (id, recipe, userId) => {
-  const { name, ingredients, preparation } = recipe;
+  const { name, ingredients, preparation, image = '' } = recipe;
 
   const recipeS = await connectionDB('recipes');
 
-  await recipeS.updateOne({ _id: ObjectID(id) }, { $set: { name, ingredients, preparation } });
+  await recipeS.updateOne({ _id: ObjectID(id) }, { $set: { name, ingredients, preparation, image } });
 
-  return { _id: id, name, ingredients, preparation, userId };
+  return { _id: id, name, ingredients, preparation, userId, image };
 };
 
 const deleteRecipe = async (id) => connectionDB('recipes')
