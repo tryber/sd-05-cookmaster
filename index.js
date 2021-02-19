@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRouter = require('./controllers/user');
+const userLogin = require('./controllers/login');
 
 const app = express();
 app.use(bodyParser.json());
@@ -11,5 +12,7 @@ app.get('/', (request, response) => {
 });
 
 app.use('/', userRouter);
+
+app.use('/', userLogin);
 
 app.listen(3000, () => console.log('nat na 3000'));
