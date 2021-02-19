@@ -5,7 +5,6 @@ const router = express.Router();
 
 const loginServices = require('../services/loginServices');
 const userModel = require('../models/userModel');
-// const createToken = require('../auth/createJWT');
 
 // Endpoint para fazer o login do usuário
 

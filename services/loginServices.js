@@ -9,6 +9,9 @@ async function login(email, password) {
   if (!registeredUser || registeredUser.password !== password) {
     return { isError: true, message: 'Incorrect username or password', status: 401 };
   }
+
+  const log = await userModel.createUser(email, password);
+  return { email, password, _id: log.insertedId };
 }
 
 module.exports = {
