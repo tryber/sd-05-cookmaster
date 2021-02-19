@@ -13,6 +13,4 @@ app.get('/', (request, response) => {
 
 app.use('/', userRouter);
 
-app.use('/login', userLogin);
-
 app.listen(3000, () => console.log('nat na 3000'));

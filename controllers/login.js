@@ -14,7 +14,7 @@ router.post(
   async (req, res) => {
     const { email, password } = req.body;
     const logUser = await loginServices.login(email, password);
-    if (!logUser) { return res.status(400).json({ message: 'Login was not possible' }); }
+    if (logUser.isError) { return res.status(logUser.status).json({ message: logUser.message }); }
 
     const secret = 'teste2021';
 
@@ -32,9 +32,13 @@ router.post(
       userData: userWithoutPassword,
     };
 
+    if (password !== user.password) {
+      return res.status(401).json({ message: 'Incorrect username or password' });
+    }
+
     const tokenUser = jwt.sign(payload, secret, jwtConfig);
     // Retorna token ao usuário
-    return res.status(200).json({ tokenUser });
+    return res.status(200).json({ token: tokenUser });
   },
 );
 
