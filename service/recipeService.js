@@ -31,7 +31,7 @@ const createRecipeService = async (req) => {
 const showRecipeService = async () => model.showRecipeModel();
 
 const showByIdService = async (id) => {
-  const recipeModel = await recipeModel.showByIdModel(id);
+  const recipeModel = await model.showByIdModel(id);
 
   if (!recipeModel) {
     return { error: true, message: 'recipe not found' };

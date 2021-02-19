@@ -27,26 +27,33 @@ recipeRouter.get(
   })
 );
 
-recipeRouter.get('/:id', rescue(async (req, res, next) => {
+recipeRouter.get(
+  '/:id',
+  rescue(async (req, res, next) => {
     const { id } = req.params;
-  
+
     const recipeService = await service.showByIdService(id);
-  
+
     if (recipeService.error) {
       return next(recipeService);
     }
-  
-    return res.status(200).json(recipeService);
-  }));
 
-  recipeRouter.put('/:id', authentication, rescue(async (req, res, next) => {
+    return res.status(200).json(recipeService);
+  })
+);
+
+recipeRouter.put(
+  '/:id',
+  authentication,
+  rescue(async (req, res, next) => {
     const atualizar = await service.updateService(req);
-  
+
     if (atualizar.error) {
       return next(atualizar);
     }
-  
+
     return res.status(200).json(atualizar);
-  }));
+  })
+);
 
 module.exports = recipeRouter;
