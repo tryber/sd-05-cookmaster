@@ -30,7 +30,18 @@ const createRecipeService = async (req) => {
 
 const showRecipeService = async () => model.showRecipeModel();
 
+const showByIdService = async (id) => {
+    const recipeModel = await recipeModel.showByIdModel(id);
+
+    if (!recipeModel) {
+        return { error: true, message: 'recipe not found' };
+    }
+
+    return recipeModel;
+} 
+
 module.exports = {
   createRecipeService,
   showRecipeService,
+  showByIdService,
 };

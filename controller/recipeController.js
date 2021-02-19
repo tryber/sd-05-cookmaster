@@ -26,4 +26,16 @@ recipeRouter.get(
   })
 );
 
+recipeRouter.get('/:id', rescue(async (req, res, next) => {
+    const { id } = req.params;
+  
+    const recipeService = await service.showByIdService(id);
+  
+    if (recipeService.error) {
+      return next(recipeService);
+    }
+  
+    return res.status(200).json(recipeService);
+  }));
+
 module.exports = recipeRouter;
