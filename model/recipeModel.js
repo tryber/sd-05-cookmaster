@@ -5,9 +5,10 @@ const createRecipe = async (name, ingredients, preparation, userId) => {
   try {
     const db = await connection();
     const recipeInserted = await db.collection('recipes').insertOne({ name, ingredients, preparation, userId });
+    console.log('linha 8', recipeInserted.ops[0].name);
     return recipeInserted.ops[0];
   } catch (err) {
-    console.err(err.message);
+    console.error(err.message);
   }
 };
 
@@ -17,7 +18,7 @@ const getAllRecipes = async () => {
     const allRecipes = await db.collection('recipes').find().toArray();
     return allRecipes;
   } catch (err) {
-    console.err(err.message);
+    console.error(err.message);
   }
 };
 
@@ -47,7 +48,7 @@ const deleteRecipe = async (id) => {
     const recipe = await db.collection('recipes').deleteOne({ _id: ObjectId(id) });
     return recipe;
   } catch (err) {
-    console.err(err.message);
+    console.error(err.message);
   }
 };
 
@@ -57,7 +58,7 @@ const uploadImage = async (id, destination) => {
     const image = await db.collection('recipes').updateOne({ _id: ObjectId(id) }, { $set: { image: destination } });
     return image;
   } catch (err) {
-    console.err(err.message);
+    console.error(err.message);
   }
 };
 

@@ -4,7 +4,7 @@ const errorMessage = (msg) => ({ message: msg });
 
 const checkRecipeForm = async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
-  if (!name || !ingredients || !preparation) return res.status(400).json(errorMessage('Invalid entries. Try again'));
+  if (!name || !ingredients || !preparation) return res.status(400).json(errorMessage('Invalid entries. Try again.'));
   next();
 };
 

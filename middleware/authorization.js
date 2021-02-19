@@ -20,7 +20,7 @@ const createToken = async (userEmail) => {
 
 const verifyJWT = (req, res, next) => {
   const { authorization: token } = req.headers;
-  if (!token) return res.status(400).json(errorMessage('Missing auth token'));
+  if (!token) return res.status(401).json(errorMessage('missing auth token'));
   try {
     const decoded = jwt.verify(token, SECRET);
     req.payload = decoded;
