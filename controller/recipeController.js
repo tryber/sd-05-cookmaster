@@ -16,7 +16,7 @@ recipeRouter.post(
     }
 
     return res.status(201).json({ recipe: newRecipe });
-  })
+  }),
 );
 
 recipeRouter.get(
@@ -24,7 +24,7 @@ recipeRouter.get(
   rescue(async (_req, res) => {
     const showRecipe = await service.showRecipeService();
     return res.status(200).json(showRecipe);
-  })
+  }),
 );
 
 recipeRouter.get(
@@ -39,7 +39,7 @@ recipeRouter.get(
     }
 
     return res.status(200).json(recipeService);
-  })
+  }),
 );
 
 recipeRouter.put(
@@ -53,7 +53,7 @@ recipeRouter.put(
     }
 
     return res.status(200).json(atualizar);
-  })
+  }),
 );
 
 module.exports = recipeRouter;
