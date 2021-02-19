@@ -12,7 +12,6 @@ router.post(
   async (req, res) => {
     const { email, password } = req.body;
     const logUser = await loginService.login(email, password);
-    if (!logUser.isError) { return res.status(logUser.status).json({ message: logUser.message }); }
     const tokenUser = await createToken(logUser);
     res.status(201).json({ tokenUser });
   },

@@ -18,10 +18,6 @@ async function createUser(name, email, password, role = 'user') {
     return { isError: true, message: 'Email already registered', status: 409 };
   }
 
-  if (!email || !password) {
-    return { isError: true, message: 'All fields must be filled', status: 401 };
-  }
-
   const user = await userModel.createUser(name, email, password, role);
   return { name, email, role, _id: user.insertedId };
 }
