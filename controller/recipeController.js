@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const rescue = require('express-rescue');
 
+const authentication = require('../middleware/authentication');
 const service = require('../service/recipeService');
 
 const recipeRouter = Router();
@@ -36,6 +37,16 @@ recipeRouter.get('/:id', rescue(async (req, res, next) => {
     }
   
     return res.status(200).json(recipeService);
+  }));
+
+  recipeRouter.put('/:id', authentication, rescue(async (req, res, next) => {
+    const atualizar = await service.updateService(req);
+  
+    if (atualizar.error) {
+      return next(atualizar);
+    }
+  
+    return res.status(200).json(atualizar);
   }));
 
 module.exports = recipeRouter;

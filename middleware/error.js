@@ -18,10 +18,14 @@ module.exports = async (err, _req, res, _next) => {
   }
 
   if (err.message === 'jwt malformed') {
-    res.status(401).json(secondError);
+    return res.status(401).json(secondError);
   }
 
   if (err.message === 'recipe not found') {
-    res.status(404).json(secondError);
+    return res.status(404).json(secondError);
+  }
+
+  if (err.message === 'missing auth token') {
+    return res.status(401).json(secondError);
   }
 };

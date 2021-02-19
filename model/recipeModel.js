@@ -15,8 +15,18 @@ const showByIdModel = async (id) => {
   return getCollection('recipes').then((recipe) => recipe.findOne(ObjectId(id)));
 };
 
+const updateModel = async (id, { name, ingredients, preparation }, userId) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  await getCollection('recipes').then((recipe) =>
+    recipe.updateOne({ _id: Object(id) }, { $set: { name, ingredients, preparation, userId } })
+  );
+  return { _id: id, name, ingredients, preparation, userId };
+};
+
 module.exports = {
   createRecipeModel,
   showRecipeModel,
   showByIdModel,
+  updateModel,
 };
