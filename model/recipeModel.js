@@ -5,7 +5,7 @@ const createRecipe = async (name, ingredients, preparation, userId) => {
   try {
     const db = await connection();
     const recipeInserted = await db.collection('recipes').insertOne({ name, ingredients, preparation, userId });
-    console.log('linha 8', recipeInserted.ops[0].name);
+    console.log('linha 8 model', recipeInserted.ops[0]);
     return recipeInserted.ops[0];
   } catch (err) {
     console.error(err.message);

@@ -14,7 +14,6 @@ const createToken = async (userEmail) => {
   const { _id, email, role } = currentUser;
   const payload = { _id, email, role };
   const token = jwt.sign(payload, SECRET, header);
-  console.log('linha 17', token);
   return token;
 };
 

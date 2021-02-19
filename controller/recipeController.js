@@ -15,8 +15,8 @@ recipeRoute.post(
     const { name, ingredients, preparation } = req.body;
     const userId = _id;
     const recipe = await recipeModel.createRecipe(name, ingredients, preparation, userId);
-    console.log('linha 17', ({ recipe }));
     if (!recipe) return res.status(400).json({ message: 'Something went wrong. Try again.' });
+    console.log('linha 19', recipe.name);
     res.status(201).json({ recipe });
   },
 );
@@ -26,7 +26,6 @@ recipeRoute.get(
   '/', async (_req, res) => {
     const recipes = await recipeModel.getAllRecipes();
     if (recipes.err) return res.status(404).json({ message: 'Something went wrong. Try again.' });
-    console.log('linha 28', recipes[0].preparation);
     res.status(200).json(recipes);
   },
 );
@@ -37,30 +36,35 @@ recipeRoute.get(
   async (req, res) => {
     const { id } = req.params;
     const recipe = await recipeModel.getRecipeById(id);
-    console.log(recipe);
     if (!recipe) return res.status(404).json({ message: 'recipe not found' });
     return res.status(200).json(recipe);
   },
 );
 
 recipeRoute.put(
-  '/:id', checkRecipeId, verifyJWT,
+  '/:id', verifyJWT, checkRecipeId,
   async (req, res) => {
+    const { id } = req.params;
     const { _id, role } = req.payload;
+    console.log(_id);
+    const userId = _id;
     const { name, ingredients, preparation } = req.body;
-    const recipe = await recipeModel.getRecipeById(_id);
-    if (role === 'admin' || _id === recipe.userId) {
-      await recipeModel.updateRecipe(_id, name, ingredients, preparation);
-      const editedRecipe = await recipeModel.getRecipeById(_id);
-      if (!editedRecipe) return res.status(401).json({ message: 'You cant edit this recipe.' });
-      return res.status(200).json(editedRecipe);
+    console.log('linha 50', req.body);
+    if (userId !== req.user) {
+      if (role !== 'admin') {
+        return res.status(401).json({ message: 'You cant edit this recipe.' });
+      }
     }
+    const editedRecipe = await recipeModel.updateRecipe(name, ingredients, preparation, userId);
+    if (editedRecipe === 0) return { message: 'Erroooou'};
+    return res.status(200).json({ id, userId, name, ingredients, preparation });
   },
 );
 
 recipeRoute.delete(
   '/:id', verifyJWT,
   async (req, res) => {
+    const { id } = req.params;
     const { role, _id } = req.payload;
     console.log(req.payload);
     const recipe = await recipeModel.getRecipeById(id);

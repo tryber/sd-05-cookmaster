@@ -16,6 +16,8 @@ app.use('/login', loginController);
 
 app.use('/recipes', recipeController); // algo aqui deu ruim
 
+app.use('/recipe/:id/image', express.static(`${__dirname}/images`));
+
 app.get('/', (_request, response) => {
   response.send();
 });
