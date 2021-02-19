@@ -7,6 +7,7 @@ const createRecipeController = require('../controllers/createRecipeController');
 const getRecipesController = require('../controllers/getRecipesController');
 const getRecipeByIdController = require('../controllers/getRecipeByIdController');
 const editRecipeController = require('../controllers/editRecipeController');
+const deleteRecipeController = require('../controllers/deleteRecipeController');
 
 const cookRouter = express.Router();
 
@@ -20,5 +21,6 @@ cookRouter.post('/recipes', middlewares.authorization, middlewares.createRecipeV
 cookRouter.get('/recipes', getRecipesController);
 cookRouter.get('/recipes/:id', getRecipeByIdController);
 cookRouter.put('/recipes/:id', middlewares.authorization, editRecipeController);
+cookRouter.delete('/recipes/:id', middlewares.authorization, deleteRecipeController);
 
 module.exports = cookRouter;
