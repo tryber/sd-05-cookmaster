@@ -80,32 +80,33 @@ recipesRouter.delete('/:id', tokenMiddleware, async (req, res) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'uploads')
+    callback(null, 'uploads');
   },
   filename: (req, file, callback) => {
     // console.log('epa file', file.mimetype)
     const start = file.mimetype.indexOf('/');
     const extensao = file.mimetype.substring(start + 1);
-    callback(null, req.params.id + '.' + extensao);
-  }
+    callback(null, `${req.params.id}.${extensao}`);
+  },
 });
 
 const uploadImage = multer({ storage });
 
 recipesRouter.put('/:id/image/', tokenMiddleware, uploadImage.single('image'), async (req, res) => {
   try {
-    console.log('danadao', req.file)
+    console.log('danadao', req.file);
     const recipeById = await getRecipeById(req.params.id);
     const { _id: id, userId } = recipeById;
-    if (req.payload.user._id !== recipeById.userId && req.payload.user.role !== 'admin') {
+    const { _id: payloadId, role } = req.payload.user;
+    if (payloadId !== recipeById.userId && role !== 'admin') {
       return res.status(401).json({ message: 'missing auth token' });
     }
-    recipeById.image = `localhost:3000/images/${req.file.filename}` ;
-    const editedRecipe = await editRecipeById(id, recipeById, userId) 
-    return res.status(200).json( editedRecipe )
+    recipeById.image = `localhost:3000/images/${req.file.filename}`;
+    const editedRecipe = await editRecipeById(id, recipeById, userId);
+    return res.status(200).json(editedRecipe);
   } catch (error) {
     return res.status(500).json(error);
   }
-})
+});
 
 module.exports = recipesRouter;

@@ -20,7 +20,10 @@ const editRecipeById = async (id, recipe, userId) => {
 
   const recipeS = await connectionDB('recipes');
 
-  await recipeS.updateOne({ _id: ObjectID(id) }, { $set: { name, ingredients, preparation, image } });
+  await recipeS.updateOne(
+    { _id: ObjectID(id) },
+    { $set: { name, ingredients, preparation, image } },
+  );
 
   return { _id: id, name, ingredients, preparation, userId, image };
 };

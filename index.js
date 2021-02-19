@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 const { userRouter, loginRouter, recipesRouter } = require('./controllers');
@@ -16,6 +17,8 @@ app.use('/users', userRouter);
 app.use('/login', loginRouter);
 
 app.use('/recipes', recipesRouter);
+
+app.use('/images', express.static(path.join(__dirname, '.', 'uploads')));
 
 const PORT = 3000;
 app.listen(PORT, () => {
