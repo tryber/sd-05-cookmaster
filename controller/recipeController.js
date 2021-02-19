@@ -56,7 +56,7 @@ recipeRoute.put(
       }
     }
     const editedRecipe = await recipeModel.updateRecipe(name, ingredients, preparation, userId);
-    if (editedRecipe === 0) return { message: 'Erroooou'};
+    if (editedRecipe === 0) return { message: 'Erroooou' };
     return res.status(200).json({ id, userId, name, ingredients, preparation });
   },
 );
