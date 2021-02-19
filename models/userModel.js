@@ -1,14 +1,14 @@
 const getConnection = require('./connection');
 
 async function createUser(name, email, password, role) {
-	const test = await getConnection('users').then((db) => {
-		console.log('chegou aqui');
+  return getConnection('users').then((db) => db.insertOne({ name, email, password, role }));
+}
 
-		db.find();
-	});
-	return test;
+async function getEmail(email) {
+  return getConnection('users').then((db) => db.findOne({ email }));
 }
 
 module.exports = {
-	createUser,
+  createUser,
+  getEmail,
 };
