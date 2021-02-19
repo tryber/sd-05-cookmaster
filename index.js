@@ -1,4 +1,5 @@
 const express = require('express');
+const { error } = require('./middlewares');
 
 const app = express();
 
@@ -6,6 +7,8 @@ const app = express();
 app.get('/', (_req, res) => {
   res.send();
 });
+
+app.use(error);
 
 const PORT = process.env.PORT || 3000;
 

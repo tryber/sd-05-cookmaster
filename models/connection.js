@@ -5,7 +5,7 @@ const DB_NAME = 'Cookmaster';
 
 let connection = null;
 
-module.exports = async(collectionName) => {
+module.exports = async (collectionName) => {
   const OPTIONS = {
     useNewParser: true,
     useUnifiedTopology: true,

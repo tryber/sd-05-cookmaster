@@ -1,7 +1,8 @@
 const connection = require('./connection');
 
 const register = async ({ name, email, password, role = 'user' }) => {
-  const emailAlreadyExists = await connection('users');
+  const emailAlreadyExists = await connection('users')
+    .then((users) => users.findOne({ email }));
 
   if (emailAlreadyExists) return null;
 
