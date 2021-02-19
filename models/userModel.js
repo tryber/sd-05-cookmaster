@@ -2,8 +2,8 @@ const mongo = require('./mongoConnection');
 
 const find = async (params = null) => {
   try {
-    const db = await mongo.getConnection();
-    const user = await db.collection('users').findOne(params == null ? {} : params);
+    const db = await mongo.getConnection('users');
+    const user = await db.findOne(params == null ? {} : params);
     return user;
   } catch (error) {
     console.log(error);
@@ -13,9 +13,9 @@ const find = async (params = null) => {
 
 const create = async (newUser) => {
   try {
-    const db = await mongo.getConnection();
+    const db = await mongo.getConnection('users');
     const userToCreate = { ...newUser, role: 'user' };
-    const createdUser = await db.collection('users').insertOne(userToCreate);
+    const createdUser = await db.insertOne(userToCreate);
     return createdUser.ops[0];
   } catch (error) {
     console.log(error);

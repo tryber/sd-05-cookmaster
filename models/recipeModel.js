@@ -2,8 +2,8 @@ const mongo = require('./mongoConnection');
 
 const find = async (params = null) => {
   try {
-    const db = await mongo.getConnection();
-    const recipe = await db.collection('recipes').findOne(params == null ? {} : params);
+    const db = await mongo.getConnection('recipes');
+    const recipe = await db.findOne(params == null ? {} : params);
     return recipe;
   } catch (error) {
     console.log(error);
@@ -13,10 +13,9 @@ const find = async (params = null) => {
 
 const findAll = async () => {
   try {
-    const db = await mongo.getConnection();
+    const db = await mongo.getConnection('recipes');
     const result = [];
     await db
-      .collection('recipes')
       .find()
       .forEach((element) => {
         result.push(element);
@@ -30,8 +29,8 @@ const findAll = async () => {
 
 const create = async (newRecipe) => {
   try {
-    const db = await mongo.getConnection();
-    const createdRecipe = await db.collection('recipes').insertOne(newRecipe);
+    const db = await mongo.getConnection('recipes');
+    const createdRecipe = await db.insertOne(newRecipe);
     return createdRecipe.ops[0];
   } catch (error) {
     console.log(error);
@@ -41,8 +40,8 @@ const create = async (newRecipe) => {
 
 const update = async (recipeId, recipe) => {
   try {
-    const db = await mongo.getConnection();
-    const result = await db.collection('recipes').updateOne({ _id: recipeId }, { $set: recipe });
+    const db = await mongo.getConnection('recipes');
+    const result = await db.updateOne({ _id: recipeId }, { $set: recipe });
     return result;
   } catch (error) {
     console.log(error);
@@ -52,8 +51,8 @@ const update = async (recipeId, recipe) => {
 
 const remove = async (recipeId) => {
   try {
-    const db = await mongo.getConnection();
-    const recipeToRemove = await db.collection('recipes').deleteOne({ _id: recipeId });
+    const db = await mongo.getConnection('recipes');
+    const recipeToRemove = await db.deleteOne({ _id: recipeId });
     return recipeToRemove;
   } catch (error) {
     console.log(error);
