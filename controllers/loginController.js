@@ -6,7 +6,7 @@ const login = Router();
 
 const jwt = require('jsonwebtoken');
 
-const secret = '1234567';
+const secret = '12345678';
 
 const usersModel = require('../models/usersModel');
 
