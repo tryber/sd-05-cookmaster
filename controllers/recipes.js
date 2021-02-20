@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 
 const router = express.Router();
 
@@ -6,6 +7,15 @@ const validateJWT = require('../auth/validateJWT');
 
 const recipesServices = require('../services/recipesServices');
 const recipesModel = require('../models/recipesModel');
+
+const storage = multer.diskStorage({
+  destination: 'uploads',
+  filename: (req, _file, callBack) => {
+    const { id } = req.params;
+    callBack(null, `${id}.jpeg`);
+  },
+});
+const upload = multer({ storage });
 
 // Endpoint para o cadastro de receitas
 // Requisito 3
@@ -65,6 +75,18 @@ router.delete(
     const { id } = req.params;
     await recipesModel.deleteById(id);
     return res.status(204).json({ message: 'deleted' });
+  }),
+);
+
+// Requisito 9
+router.put(
+  '/:id/image/',
+  validateJWT,
+  upload.single('image'),
+  (async (req, res) => {
+    const { id } = req.params;
+    const recipe = await recipesModel.addImage(id);
+    return res.status(200).json(recipe);
   }),
 );
 

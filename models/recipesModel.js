@@ -28,10 +28,18 @@ async function deleteById(userId) {
   return getConnection('recipes').then((recipes) => recipes.deleteOne({ _id: ObjectId(userId) }));
 }
 
+async function addImage(userId) {
+  const image = `localhost:3000/images/${userId}.jpeg`;
+  await getConnection('recipes').then((db) => db.updateOne({ _id: ObjectId(userId) }, { $set: { image } }));
+  const recipe = getConnection('recipes').then((db) => db.findOne({ _id: ObjectId(userId) }));
+  return recipe;
+}
+
 module.exports = {
   createRecipe,
   getAll,
   findById,
   deleteById,
   updateById,
+  addImage,
 };
