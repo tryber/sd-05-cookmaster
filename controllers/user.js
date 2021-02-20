@@ -7,7 +7,7 @@ const userService = require('../services/userServices');
 // Endpoint para adicionar novo usuário
 
 router.post(
-  '/users',
+  '/',
   async (req, res) => {
     const { name, email, password, role } = req.body;
     const addUser = await userService.createUser(name, email, password, role);

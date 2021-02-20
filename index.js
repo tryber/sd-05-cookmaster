@@ -12,10 +12,10 @@ app.get('/', (request, response) => {
   response.send();
 });
 
-app.use('/', userRouter);
+app.use('/users', userRouter);
 
-app.use('/', userLogin);
+app.use('/login', userLogin);
 
-app.use('/', recipes);
+app.use('/recipes', recipes);
 
 app.listen(3000, () => console.log('nat na 3000'));

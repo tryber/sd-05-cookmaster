@@ -10,7 +10,7 @@ const recipesModel = require('../models/recipesModel');
 // Endpoint para o cadastro de receitas
 // Requisito 3
 router.post(
-  '/recipes',
+  '/',
   validateJWT,
   (async (req, res) => {
     const { name, ingredients, preparation } = req.body;
@@ -23,7 +23,7 @@ router.post(
 );
 // Requisito 4
 router.get(
-  '/recipes',
+  '/',
   (async (req, res) => {
     const recipe = await recipesModel.getAll();
     if (recipe.isError) return res.status(recipe.status).json({ message: recipe.message });
@@ -32,7 +32,7 @@ router.get(
 );
 // Requisito 5
 router.get(
-  '/recipes/:id',
+  '/:id',
   (async (req, res) => {
     const { id } = req.params;
     const recipe = await recipesModel.findById(id);
@@ -43,7 +43,7 @@ router.get(
 
 // Requisito 7
 router.put(
-  '/recipes/:id',
+  '/:id',
   validateJWT,
   (async (req, res) => {
     const { id } = req.params;

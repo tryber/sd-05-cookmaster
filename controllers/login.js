@@ -9,7 +9,7 @@ const userModel = require('../models/userModel');
 // Endpoint para fazer o login do usuário
 
 router.post(
-  '/login',
+  '/',
   async (req, res) => {
     const { email, password } = req.body;
     const logUser = await loginServices.login(email, password);
