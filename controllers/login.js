@@ -25,11 +25,8 @@ router.post(
     const user = await userModel.getEmail(email);
 
     const { password: _, ...userWithoutPassword } = user;
-    const { _id: id } = userWithoutPassword;
-    const payload = {
-      sub: id,
-      userData: userWithoutPassword,
-    };
+    console.log(userWithoutPassword);
+    const payload = userWithoutPassword;
 
     if (password !== user.password) {
       return res.status(401).json({ message: 'Incorrect username or password' });

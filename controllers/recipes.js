@@ -1,21 +1,23 @@
-// const express = require('express');
-// const rescue = require('express-rescue');
-// // VERIFICAR NOVO USUARIO
-// const router = express.Router();
+const express = require('express');
 
-// const erroMsg = require('../middlewares/erroResponse');
+const router = express.Router();
+
+const validateJWT = require('../auth/validateJWT');
+
+const recipesServices = require('../services/recipesServices');
 
 // Endpoint para o cadastro de receitas
 
-// router.post(
-//   '/recipes',
-//   // checkRecipe,
-//   rescue(async (req, res) => {
-//     const { name, ingredients, preparation } = req.body;
-//     const { _id: userId } = req.userPayload;
+router.post(
+  '/recipes',
+  validateJWT,
+  (async (req, res) => {
+    const { name, ingredients, preparation } = req.body;
+    const { _id: userId } = req.user;
+    const newRecipe = await recipesServices.createRecipe(name, ingredients, preparation, userId);
+    if (newRecipe.isError) return res.status(newRecipe.status).json({ message: newRecipe.message });
+    return res.status(201).json({ recipe: newRecipe });
+  }),
+);
 
-//     const newRecipe = await RECIPESERVICES.create(name, ingredients, preparation, userId);
-//     if (!newRecipe) return res.status(400).json({ message: 'Recipe was not created' });
-//     return res.status(201).json(newRecipe);
-//   }),
-// );
+module.exports = router;
