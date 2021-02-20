@@ -53,7 +53,7 @@ const validateBeforeGetRecipe = (req, res, next) => {
     return res.status(401).json({ message: 'missing auth token' });
   }
   try {
-  jwt.verify(req.headers.authorization, secretKey);
+    jwt.verify(req.headers.authorization, secretKey);
   } catch (error) {
     return res.status(401).json({ message: 'jwt malformed' });
   }
