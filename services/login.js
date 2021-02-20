@@ -10,8 +10,8 @@ const login = async (email, password) => {
     err.code = 'invalid_data';
     throw err;
   }
-  const token = await modelLogin.login(email);
-  if (!token || !token.email || token.password !== password) {
+  const user = await modelLogin.login(email, password);
+  if (!user) {
     const err = {};
     err.isErr = true;
     err.message = 'Incorrect username or password';
@@ -19,7 +19,7 @@ const login = async (email, password) => {
     err.code = 'invalid_data';
     throw err;
   }
-  return token;
+  return user;
 };
 
 module.exports = { login };
