@@ -20,7 +20,6 @@ module.exports = async (req, res, next) => {
       };
     }
     req.user = payload.userData;
-
     return next();
   } catch (error) {
     return res.status(401).json({ message: error.message });
