@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, segredo);
-    console.log(decoded);
+
     const user = await model.getEmail(decoded.email);
 
     // Se não existir usuário logado retorna este erro
@@ -26,7 +26,6 @@ module.exports = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log(err);
     return res.status(401).json({ message: 'jwt malformed' });
   }
 };

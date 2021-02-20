@@ -25,7 +25,7 @@ router.post(
     const user = await userModel.getEmail(email);
 
     const { password: _, ...userWithoutPassword } = user;
-    console.log(userWithoutPassword);
+
     const payload = userWithoutPassword;
 
     if (password !== user.password) {
