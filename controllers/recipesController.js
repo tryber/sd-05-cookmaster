@@ -48,25 +48,6 @@ recipes.get('/:id', async (req, res) => {
   }
 });
 
-recipes.get('/', async (_req, res) => {
-  const getAll = await recipesService.getAll();
-  return res.status(200).json(getAll);
-});
-
-recipes.get('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const getById = await recipesService.getById(id);
-    if (getById.error) {
-      return res.status(getById.statusCode).json({ message: getById.message });
-    }
-    res.status(200).json(getById);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: 'Algo deu errado' });
-  }
-});
-
 recipes.put('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
@@ -94,7 +75,7 @@ recipes.put('/:id', auth, async (req, res) => {
 recipes.delete('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
-    const deletaReceita = await recipesService.deleteRecipe(id);
+    const deletaReceita = await recipesService.remove(id);
     if (!auth) return res.status(401).json({ message: 'missing auth token' });
     res.status(204).json(deletaReceita);
   } catch (error) {
