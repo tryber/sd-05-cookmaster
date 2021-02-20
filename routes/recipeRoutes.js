@@ -18,8 +18,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/', validateNewRecipe, (req, res) => recipeController.createRecipe(req, res));
-router.get('/', validateBeforeGetRecipe, (req, res) => recipeController.getRecipes(req, res));
-router.get('/:id', validateBeforeGetRecipe, (req, res) => recipeController.getRecipe(req, res));
+router.get('/', (req, res) => recipeController.getRecipes(req, res));
+router.get('/:id', (req, res) => recipeController.getRecipe(req, res));
 router.put('/:id', validateBeforeUpdateRecipe, (req, res) =>
   recipeController.updateRecipe(req, res));
 router.delete('/:id', validateBeforeUpdateRecipe, (req, res) =>
@@ -27,9 +27,7 @@ router.delete('/:id', validateBeforeUpdateRecipe, (req, res) =>
 router.put('/:id/image/', validateBeforeGetRecipe, upload.single('image'), async (req, res) => {
   const { id } = req.params;
 
-  await recipeModel.uploadImage(id);
-
-  const recipe = await recipeModel.find(id);
+  const recipe = await recipeModel.uploadImage(id);
 
   return res.status(200).json(recipe);
 });

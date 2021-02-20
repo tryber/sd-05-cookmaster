@@ -49,12 +49,13 @@ const validateNewRecipe = async (req, res, next) => {
 };
 
 const validateBeforeGetRecipe = (req, res, next) => {
-  if (req.headers.authorization) {
-    try {
-      jwt.verify(req.headers.authorization, secretKey);
-    } catch (error) {
-      return res.status(401).json({ message: 'jwt malformed' });
-    }
+  if (!req.headers.authorization) {
+    return res.status(401).json({ message: 'missing auth token' });
+  }
+  try {
+  jwt.verify(req.headers.authorization, secretKey);
+  } catch (error) {
+    return res.status(401).json({ message: 'jwt malformed' });
   }
   next();
 };

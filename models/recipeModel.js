@@ -72,7 +72,8 @@ const uploadImage = async (id) => {
 
   await db.updateOne({ _id: ObjectId(id) }, { $set: { image: path } });
 
-  return null;
+  const recipe = await db.findOne({ _id: ObjectId(id) });
+  return recipe;
 };
 
 module.exports = {
