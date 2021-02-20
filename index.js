@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const userController = require('./controller/userController');
 const loginController = require('./controller/loginController');
@@ -16,7 +17,7 @@ app.use('/login', loginController);
 
 app.use('/recipes', recipeController); // algo aqui deu ruim
 
-app.use('/recipe/:id/image', express.static(`${__dirname}/images`));
+app.use('/images', express.static(path.join(__dirname, 'image')));
 
 app.get('/', (_request, response) => {
   response.send();

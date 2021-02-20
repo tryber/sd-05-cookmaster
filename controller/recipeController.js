@@ -17,7 +17,7 @@ recipeRoute.post(
     const recipe = await recipeModel.createRecipe(name, ingredients, preparation, userId);
     if (!recipe) return res.status(400).json({ message: 'Something went wrong. Try again.' });
     console.log('linha 19', recipe.name);
-    res.status(201).json({ recipe });
+    return res.status(201).json({ recipe });
   },
 );
 
@@ -46,7 +46,7 @@ recipeRoute.put(
   async (req, res) => {
     const { id } = req.params;
     const { _id, role } = req.payload;
-    console.log(_id);
+    console.log('linha 49', _id);
     const userId = _id;
     const { name, ingredients, preparation } = req.body;
     console.log('linha 50', req.body);
@@ -79,18 +79,28 @@ recipeRoute.delete(
 recipeRoute.put(
   '/:id/image/',
   verifyJWT,
+  checkRecipeId,
   upload.single('image'), // multer é um middleware
   async (req, res) => {
     try {
       const { id } = req.params;
       const recipe = await recipeModel.getRecipeById(id);
+      const { _id, role } = req.payload;
+      const userId = _id;
+      if (userId !== req.user) {
+        if (role !== 'admin') {
+          return res.status(401).json({ message: 'You cant edit this recipe.' });
+        }
+      }
 
       const destination = `localhost:3000/images/${id}.jpeg`;
 
       await recipeModel.uploadImage(id, destination);
 
       const updatedRecipe = { ...recipe, image: destination };
+
       res.status(200).json(updatedRecipe);
+      console.log('linha 96', updatedRecipe);
     } catch (err) {
       res.status(501).json({
         message: 'Failed to upload image',
