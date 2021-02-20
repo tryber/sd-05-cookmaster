@@ -3,10 +3,10 @@ const { MongoClient } = require('mongodb');
 const DB_NAME = 'Cookmaster';
 
 // Conexão para realizar EVALUATOR
-// const MONGO_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
+const MONGO_DB_URL = 'mongodb://mongodb:27017/Cookmaster';
 
 // conexão no banco local
-const MONGO_DB_URL = 'mongodb://localhost:27017/Cookmaster';
+// const MONGO_DB_URL = 'mongodb://localhost:27017/Cookmaster';
 
 let connection = null;
 
