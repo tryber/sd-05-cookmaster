@@ -11,9 +11,7 @@ recipesRouter.get('/:id', async (req, res) => {
     console.log(recipe, 'recipes');
     return res.status(200).json(recipe);
   } catch (error) {
-    return res
-      .status(404)
-      .json({ message: 'recipe not found' });
+    return res.status(404).json({ message: 'recipe not found' });
   }
 });
 
@@ -36,7 +34,7 @@ recipesRouter.post('/', verifyToken, async (req, res) => {
       name,
       ingredients,
       preparation,
-      userId
+      userId,
     );
     return res.status(201).json(recipe);
   } catch (err) {
