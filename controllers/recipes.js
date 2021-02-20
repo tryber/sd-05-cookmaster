@@ -36,10 +36,35 @@ router.get(
   (async (req, res) => {
     const { id } = req.params;
     const recipe = await recipesModel.findById(id);
-    console.log(recipe);
-    console.log(id);
     if (!recipe) return res.status(404).json({ message: 'recipe not found' });
     return res.status(200).json(recipe);
+  }),
+);
+
+// Requisito 7
+router.put(
+  '/recipes/:id',
+  validateJWT,
+  (async (req, res) => {
+    const { id } = req.params;
+    const { _id: userId } = req.user;
+    const { name, ingredients, preparation } = req.body;
+
+    const payload = { name, ingredients, preparation };
+    const recipe = await recipesModel.updateById(id, payload, userId);
+    if (!recipe) return res.status(404).json({ message: 'recipe not found' });
+    return res.status(200).json(recipe);
+  }),
+);
+
+// Requisito 8
+router.delete(
+  '/:id',
+  validateJWT,
+  (async (req, res) => {
+    const { id } = req.params;
+    await recipesModel.deleteById(id);
+    return res.status(204).json({ message: 'deleted' });
   }),
 );
 
