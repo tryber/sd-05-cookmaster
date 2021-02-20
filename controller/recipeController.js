@@ -79,16 +79,15 @@ recipeRoute.delete(
 recipeRoute.put(
   '/:id/image/',
   verifyJWT,
-  checkRecipeForm,
   upload.single('image'), // multer é um middleware
   async (req, res) => {
     try {
-      const { _id } = req.payload;
-      const recipe = await recipeModel.getRecipeById(_id);
+      const { id } = req.params;
+      const recipe = await recipeModel.getRecipeById(id);
 
-      const destination = `localhost:3000/images/${_id}.jpeg`;
+      const destination = `localhost:3000/images/${id}.jpeg`;
 
-      await recipeModel.uploadImage(_id, destination);
+      await recipeModel.uploadImage(id, destination);
 
       const updatedRecipe = { ...recipe, image: destination };
       res.status(200).json(updatedRecipe);
