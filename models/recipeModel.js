@@ -1,10 +1,14 @@
+const { ObjectId } = require('mongodb');
 const mongo = require('./mongoConnection');
 
-const find = async (params = null) => {
+const find = async (params) => {
   try {
     const db = await mongo.getConnection('recipes');
-    const recipe = await db.findOne(params == null ? {} : params);
-    return recipe;
+    if (ObjectId.isValid(params)) { 
+    const recipe = await db.findOne({_id: ObjectId(params)});
+    return recipe
+  }
+  return null;
   } catch (error) {
     console.log(error);
     return false;
@@ -60,10 +64,22 @@ const remove = async (recipeId) => {
   }
 };
 
+const uploadImage = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  const db = await mongo.getConnection('recipes');
+  const path = `localhost:3000/images/${id}.jpeg`;
+
+  await db.updateOne({ _id: ObjectId(id) }, { $set: { image: path } });
+
+  return
+};
+
 module.exports = {
   find,
   create,
   update,
   remove,
   findAll,
+  uploadImage,
 };

@@ -6,6 +6,7 @@ const secretKey = '9c4e93c0efb98664abc16c3020bf697946b5c7fd18a2dd0f29a798de2d7b3
 const createUser = async (req, res) => {
   const newUser = req.body;
   const result = await userModel.create(newUser);
+  console.log('usuário criado');
   return !result
     ? res.status(500).json({ message: 'Não foi possivel criar o usuario' })
     : res.status(201).json({ message: 'usuario criado com sucesso', user: result });

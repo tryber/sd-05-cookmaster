@@ -20,8 +20,7 @@ const getRecipes = async (_req, res) => {
 const getRecipe = async (req, res) => {
   if (!ObjectId.isValid(req.params.id)) return res.status(404).json({ message: 'recipe not found' });
 
-  const result = await recipeModel.find({ _id: new ObjectId(req.params.id) });
-
+  const result = await recipeModel.find(req.params.id);
   if (result == null) return res.status(404).json({ message: 'recipe not found' });
 
   return !result
@@ -48,6 +47,7 @@ const removeRecipe = async (req, res) => {
     ? res.status(500).json({ message: 'error on database' })
     : res.status(204).json(req.body);
 };
+
 
 module.exports = {
   createRecipe,
