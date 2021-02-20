@@ -4,11 +4,11 @@ const mongo = require('./mongoConnection');
 const find = async (params) => {
   try {
     const db = await mongo.getConnection('recipes');
-    if (ObjectId.isValid(params)) { 
-    const recipe = await db.findOne({_id: ObjectId(params)});
-    return recipe
-  }
-  return null;
+    if (ObjectId.isValid(params)) {
+      const recipe = await db.findOne({ _id: ObjectId(params) });
+      return recipe;
+    }
+    return null;
   } catch (error) {
     console.log(error);
     return false;
@@ -72,7 +72,7 @@ const uploadImage = async (id) => {
 
   await db.updateOne({ _id: ObjectId(id) }, { $set: { image: path } });
 
-  return
+  return null;
 };
 
 module.exports = {

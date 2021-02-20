@@ -11,11 +11,9 @@ const validateEmailRegex = (email) => {
 const newUserValidate = async (req, res, next) => {
   const { name, email, password } = req.body;
 
-  if (!name || !email || !password)
-    return res.status(400).json({ message: 'Invalid entries. Try again.' });
+  if (!name || !email || !password) return res.status(400).json({ message: 'Invalid entries. Try again.' });
 
-  if (!validateEmailRegex(email))
-    return res.status(400).json({ message: 'Invalid entries. Try again.' });
+  if (!validateEmailRegex(email)) return res.status(400).json({ message: 'Invalid entries. Try again.' });
 
   const foundUser = await userModel.find({ email });
 
@@ -29,8 +27,7 @@ const validateLogin = (req, res, next) => {
 
   if (!email || !password) return res.status(401).json({ message: 'All fields must be filled' });
 
-  if (!validateEmailRegex(email))
-    return res.status(401).json({ message: 'Incorrect username or password' });
+  if (!validateEmailRegex(email)) return res.status(401).json({ message: 'Incorrect username or password' });
 
   next();
 };
@@ -38,8 +35,7 @@ const validateLogin = (req, res, next) => {
 const validateNewRecipe = async (req, res, next) => {
   const { name, preparation, ingredients } = req.body;
 
-  if (!name || !preparation || !ingredients)
-    return res.status(400).json({ message: 'Invalid entries. Try again.' });
+  if (!name || !preparation || !ingredients) return res.status(400).json({ message: 'Invalid entries. Try again.' });
 
   jwt.verify(req.headers.authorization, secretKey, async (error, decodedObject) => {
     if (error !== null) return res.status(401).json({ message: 'jwt malformed' });

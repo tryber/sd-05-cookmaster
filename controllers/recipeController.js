@@ -48,7 +48,6 @@ const removeRecipe = async (req, res) => {
     : res.status(204).json(req.body);
 };
 
-
 module.exports = {
   createRecipe,
   updateRecipe,
