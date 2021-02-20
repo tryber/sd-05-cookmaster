@@ -8,7 +8,7 @@ const loginController = require('./controllers/loginController');
 
 const recipesController = require('./controllers/recipesController');
 
-const authMiddleware = require('./middlewares/auth');
+// const authMiddleware = require('./middlewares/auth');
 
 const app = express();
 
@@ -23,7 +23,7 @@ app.use('/users', usersController);
 
 app.use('/login', loginController);
 
-app.use('/recipes', authMiddleware, recipesController);
+app.use('/recipes', recipesController);
 
 const PORT = 3000;
 
