@@ -17,6 +17,9 @@ function createToken(user) {
 
 function verifyToken(req, res, next) {
   const { authorization: token } = req.headers;
+  if (!token) {
+    return res.status(401).json({ message: 'missing auth token' });
+  }
   try {
     const payload = jwt.verify(token, secret);
     req.payload = payload;

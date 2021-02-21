@@ -9,8 +9,34 @@ const insertNewRecipe = async (name, ingredients, preparation, userId) => {
     err.code = 'invalid_data';
     throw err;
   }
-  const recipe = await modelRecipes.insertNewRecipe(name, ingredients, preparation, userId);
-  console.log(recipe);
+  const recipe = await modelRecipes.insertNewRecipe(
+    name,
+    ingredients,
+    preparation,
+    userId,
+  );
+  return recipe;
+};
+
+const updateRecipe = async (recipeParams, payload) => {
+  const { name, ingredients, preparation, recipeId } = recipeParams;
+  const { _id: userId, role } = payload;
+  const recipeById = await modelRecipes.getRecipe(recipeId);
+  if (userId !== recipeById.userId && role !== 'admin') {
+    const err = {};
+    err.isErr = true;
+    err.message = 'Invalid entries. Try again.';
+    err.status = 400;
+    err.code = 'invalid_data';
+    throw err;
+  }
+  const recipe = await modelRecipes.updateRecipe(
+    name,
+    ingredients,
+    preparation,
+    recipeId,
+    recipeById.image,
+  );
   return recipe;
 };
 
@@ -24,4 +50,35 @@ const getRecipe = async (id) => {
   return recipe;
 };
 
-module.exports = { insertNewRecipe, getAllRecipes, getRecipe };
+const deleteRecipe = async (id) => modelRecipes.getRecipe(id);
+
+const uploadPhoto = async (recipeId, payload, imagePath) => {
+  const { _id: userId, role } = payload;
+  const recipeById = await modelRecipes.getRecipe(recipeId);
+  if (userId !== recipeById.userId && role !== 'admin') {
+    const err = {};
+    err.isErr = true;
+    err.message = 'Invalid entries. Try again.';
+    err.status = 400;
+    err.code = 'invalid_data';
+    throw err;
+  }
+  const { name, ingredients, preparation, image = '' } = recipeById;
+  const recipe = await modelRecipes.updateRecipe(
+    name,
+    ingredients,
+    preparation,
+    recipeId,
+    imagePath,
+  );
+  return recipe;
+};
+
+module.exports = {
+  insertNewRecipe,
+  getAllRecipes,
+  getRecipe,
+  updateRecipe,
+  deleteRecipe,
+  uploadPhoto,
+};

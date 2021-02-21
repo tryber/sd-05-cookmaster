@@ -18,6 +18,24 @@ const insertNewRecipe = async (name, ingredients, preparation, userId) =>
     return recipe;
   });
 
+const updateRecipe = async (
+  name,
+  ingredients,
+  preparation,
+  recipeId,
+  image = '',
+) => {
+  const teste = await getConnection().then(async (db) => {
+    await db
+      .collection('recipes')
+      .updateOne(
+        { _id: ObjectId(recipeId) },
+        { $set: { name, ingredients, preparation, image } },
+      );
+    return { name, ingredients, preparation, _id: recipeId, image };
+  });
+  return teste;
+};
 const getAllRecipes = async () =>
   getConnection().then(async (db) => {
     const recipes = await db.collection('recipes').find().toArray();
@@ -26,8 +44,21 @@ const getAllRecipes = async () =>
 
 const getRecipe = async (id) =>
   getConnection().then(async (db) => {
-    const recipe = await db.collection('recipes').findOne({ _id: ObjectId(id) });
+    const recipe = await db
+      .collection('recipes')
+      .findOne({ _id: ObjectId(id) });
     return recipe;
   });
 
-module.exports = { insertNewRecipe, getAllRecipes, getRecipe };
+const deleteRecipe = async (id) =>
+  getConnection().then(async (db) =>
+    db.collection('recipes').deleteOne({ _id: ObjectId(id) }),
+  );
+
+module.exports = {
+  insertNewRecipe,
+  getAllRecipes,
+  getRecipe,
+  updateRecipe,
+  deleteRecipe,
+};
