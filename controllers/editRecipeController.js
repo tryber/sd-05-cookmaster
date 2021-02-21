@@ -10,8 +10,15 @@ const editRecipeController = async (req, res) => {
 
   const { name, ingredients, preparation } = req.body;
   const { _id: userId } = req.user;
+  const recipeResponse = {
+    id,
+    name,
+    ingredients,
+    preparation,
+    userId,
+  };
 
-  const response = await editRecipeService(id, name, ingredients, preparation, userId);
+  const response = await editRecipeService(recipeResponse);
 
   if (!response) {
     return res.status(404).json({ message: 'recipe not found' });
