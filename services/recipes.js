@@ -63,7 +63,7 @@ const uploadPhoto = async (recipeId, payload, imagePath) => {
     err.code = 'invalid_data';
     throw err;
   }
-  const { name, ingredients, preparation, image = '' } = recipeById;
+  const { name, ingredients, preparation } = recipeById;
   const recipe = await modelRecipes.updateRecipe(
     name,
     ingredients,

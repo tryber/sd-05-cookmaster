@@ -51,9 +51,8 @@ const getRecipe = async (id) =>
   });
 
 const deleteRecipe = async (id) =>
-  getConnection().then(async (db) =>
-    db.collection('recipes').deleteOne({ _id: ObjectId(id) }),
-  );
+  getConnection().then(async (db) => db
+    .collection('recipes').deleteOne({ _id: ObjectId(id) }));
 
 module.exports = {
   insertNewRecipe,
