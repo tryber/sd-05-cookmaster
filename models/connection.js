@@ -7,7 +7,7 @@ let connection = null;
 
 module.exports = async (collectionName) => {
   const OPTIONS = {
-    useNewParser: true,
+    useNewUrlParser: true,
     useUnifiedTopology: true,
   };
   connection = connection || await MongoClient.connect(MONGO_DB_URL, OPTIONS);

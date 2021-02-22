@@ -1,18 +1,28 @@
 const connection = require('./connection');
 
+const find = async (document) => {
+  const user = await connection('users')
+    .then((users) => users.findOne(document))
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
+
+  return user;
+};
+
 const register = async ({ name, email, password, role = 'user' }) => {
-  const emailAlreadyExists = await connection('users')
-    .then((users) => users.findOne({ email }));
-
-  if (emailAlreadyExists) return null;
-
   const newUser = await connection('users')
     .then((users) => users.insertOne({
       name,
       email,
       password,
       role,
-    }));
+    }))
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
 
   return {
     _id: newUser.insertedId,
@@ -24,5 +34,6 @@ const register = async ({ name, email, password, role = 'user' }) => {
 };
 
 module.exports = {
+  find,
   register,
 };
