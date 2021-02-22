@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const usersController = require('./controller/UserController');
-const loginsController = require('./controller/loginController');
-const recipesController = require('./controller/recipeController');
+const path = require('path');
+const user = require('./controller/UserController');
+const login = require('./controller/loginController');
+const recipeRouter = require('./controller/recipeController');
 
-const erros = require('./middleware/error');
+// const erros = require('./middleware/error');
 
 const app = express();
 
@@ -15,11 +16,10 @@ app.get('/', (request, response) => {
 
 app.use(bodyParser.json());
 
-app.use('/users', usersController);
-app.use('/login', loginsController);
-app.use('/recipes', recipesController);
-
-app.use(erros);
+app.use('/users', user);
+app.use('/login', login);
+app.use('/recipes', recipeRouter);
+app.use('/images', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = 3000;
 app.listen(PORT, () => {

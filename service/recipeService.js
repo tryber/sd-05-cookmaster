@@ -1,15 +1,19 @@
 const jwt = require('jsonwebtoken');
 const model = require('../model/recipeModel');
 
-const senha = 'senhaSecreta';
+const secret = 'secretPassword';
 
-const createRecipeService = async (req) => {
+const createRecipeService = async (req, res, next) => {
   const { name, ingredients, preparation } = req.body;
-  const requisicao = req.headers.authorization;
 
   if (!name || !ingredients || !preparation) {
-    return { error: true, message: 'Invalid entries. Try again.' };
+    return res.status(400).json({ message: 'Invalid entries. Try again.' });
   }
+
+  next();
+};
+/* const requisicao = req.headers.authorization;
+
 
   if (!requisicao) {
     return { error: true, message: 'jwt malformed' };
@@ -46,10 +50,8 @@ const updateService = async (req) => {
 
   return model.updateModel(id, req.body, userId);
 };
+*/
 
 module.exports = {
   createRecipeService,
-  showRecipeService,
-  showByIdService,
-  updateService,
 };

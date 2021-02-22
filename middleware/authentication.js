@@ -1,29 +1,26 @@
 const jwt = require('jsonwebtoken');
-const model = require('../model/UserModel');
+require('dotenv').config();
+// const model = require('../model/UserModel');
 
-const senha = 'senhaSecreta';
+const secret = 'secretPassword';
 
-module.exports = async (req, res, next) => {
-  const token = req.headers.authorization;
-
-  if (!token) return res.status(401).json({ message: 'missing auth token' });
-
+const authToken = async (req, res, next) => {
   try {
-    const payload = jwt.verify(token, senha, {
-      audience: 'identity',
-      issuer: 'post-api',
-    });
+    const token = req.headers.authorization;
 
-    const user = await model.emailModel(payload.userData.email);
+    if (!token) {
+      return res.status(401).json({ message: 'missing auth token' });
+    }
 
-    if (!user) throw new Error({ code: 'invalid_user', message: 'Invalid entries. Try again.' });
+    const payload = jwt.verify(token, secret);
+    req.payload = payload;
 
-    const { password, ...newPassword } = user;
-
-    req.user = newPassword;
-
-    return next();
+    next();
   } catch (err) {
-    return res.status(401).json({ message: err.message });
+    res.status(401).json({ message: 'jwt malformed' });
   }
+};
+
+module.exports = {
+  authToken,
 };

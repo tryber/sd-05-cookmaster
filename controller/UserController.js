@@ -1,19 +1,32 @@
 const { Router } = require('express');
-const rescue = require('express-rescue');
-const service = require('../service/UserService');
+// const rescue = require('express-rescue');
+const createUserService = require('../middleware/user');
+const authToken = require('../middleware/authentication');
+const { createUserModel } = require('../model/UserModel');
 
 const rota = Router();
 
-rota.post(
-  '/',
-  rescue(async (req, res, next) => {
-    const createNewUser = await service.createUserService(req.body);
+rota.post('/', createUserService, async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const user = await createUserModel(name, email, password);
+    return res.status(201).json(user);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+});
 
-    if (createNewUser.error) {
-      return next(createNewUser);
+rota.post('/admin', createUserService, authToken, async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (req.payload.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Only admins can register new admins' });
     }
-    return res.status(201).json({ user: createNewUser });
-  }),
-);
+    const user = await createUserModel(name, email, password, 'admin');
+    return res.status(201).json(user);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+});
 
 module.exports = rota;

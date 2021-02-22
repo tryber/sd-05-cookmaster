@@ -1,4 +1,4 @@
-const model = require('../model/UserModel');
+/* const model = require('../model/UserModel');
 
 const loginService = async (body) => {
   const { email, password } = body;
@@ -23,3 +23,4 @@ const loginService = async (body) => {
 module.exports = {
   loginService,
 };
+*/
