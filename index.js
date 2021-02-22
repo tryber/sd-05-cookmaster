@@ -1,12 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { loginController, usersController } = require('./controllers');
+const { loginController, recipesController, usersController } = require('./controllers');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use('/login', loginController);
+app.use('/recipes', recipesController);
 app.use('/users', usersController);
 
 // não remova esse endpoint, e para o avaliador funcionar

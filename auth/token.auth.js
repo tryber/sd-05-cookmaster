@@ -8,10 +8,17 @@ const generateToken = (payload) => jwt.sign({
   payload,
 }, SECRET);
 
-const verifyToken = (token) => jwt.verify(
-  token,
-  SECRET,
-).catch(() => { throw new Error('JWT malformed'); });
+const verifyToken = (token) => {
+  try {
+    return jwt.verify(
+      token,
+      SECRET,
+    );
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
 
 module.exports = {
   generateToken,

@@ -1,5 +1,5 @@
-const { generateToken } = require('../auth/token.auth');
 const userModel = require('../models/user');
+const { generateToken } = require('../auth/token.auth');
 
 const isEmailValid = (email) => {
   const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
