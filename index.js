@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { error } = require('./middlewares');
-const { usersController } = require('./controllers');
+const { loginController, usersController } = require('./controllers');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+app.use('/login', loginController);
 app.use('/users', usersController);
 
 // não remova esse endpoint, e para o avaliador funcionar
@@ -14,6 +14,11 @@ app.get('/', (_req, res) => {
   res.send();
 });
 
-app.use(error);
+const errorMiddleware = (err, _res, req, _next) => {
+  const { status, message } = err;
+  req.status(status).json({ message });
+};
+
+app.use(errorMiddleware);
 
 app.listen(PORT, () => { console.log(`Online on ${PORT}`); });

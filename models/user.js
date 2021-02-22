@@ -11,6 +11,17 @@ const find = async (document) => {
   return user;
 };
 
+const login = async ({ email, password }) => {
+  const user = await connection('users')
+    .then((users) => users.findOne({ email, password }))
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
+
+  return user;
+};
+
 const register = async ({ name, email, password, role = 'user' }) => {
   const newUser = await connection('users')
     .then((users) => users.insertOne({
@@ -35,5 +46,6 @@ const register = async ({ name, email, password, role = 'user' }) => {
 
 module.exports = {
   find,
+  login,
   register,
 };
