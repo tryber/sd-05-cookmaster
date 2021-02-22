@@ -20,7 +20,7 @@ const updateModel = async (id, userId, recipe) => {
 
   await myRecipe.updateOne(
     { _id: ObjectId(id) },
-    { $set: { name, ingredients, preparation, image } }
+    { $set: { name, ingredients, preparation, image } },
   );
 
   return { _id: id, name, ingredients, preparation, userId, image };

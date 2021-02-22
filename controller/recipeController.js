@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { ObjectId } = require('mongodb');
 const multer = require('multer');
 
-const createRecipeService = require('../service/recipeService');
+const { createRecipeService } = require('../service/recipeService');
 const {
   createRecipeModel,
   showRecipeModel,

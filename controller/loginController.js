@@ -24,14 +24,11 @@ login.post(
         return res.status(401).json({ message: 'All fields must be filled' });
       }
 
-      // const loginIsValid = await service.loginService(req.body);
       const user = await emailModel({ email });
 
       if (!user || password !== user.password) {
         return res.status(401).json({ message: 'Incorrect username or password' });
       }
-
-      //const { password, name, ...nonRegister } = loginIsValid;
 
       delete user.password;
 
@@ -47,7 +44,7 @@ login.post(
     } catch (error) {
       return res.status(500).json({ message: 'Internal error' });
     }
-  })
+  }),
 );
 
 module.exports = login;
