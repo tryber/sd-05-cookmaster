@@ -1,7 +1,7 @@
+// const express = require('express');
 const { Router } = require('express');
-// const rescue = require('express-rescue');
-const createUserService = require('../service/UserService');
-const authToken = require('../middleware/authentication');
+const { createUserService } = require('../service/UserService');
+const { authToken } = require('../middleware/authentication');
 const { createUserModel } = require('../model/UserModel');
 
 const rota = Router();
@@ -9,7 +9,8 @@ const rota = Router();
 rota.post('/', createUserService, async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const user = await createUserModel(name, email, password);
+    const user = await createUserModel({ name, email, password });
+    // console.log(user);
     return res.status(201).json(user);
   } catch (error) {
     return res.status(400).json(error);

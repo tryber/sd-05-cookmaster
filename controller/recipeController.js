@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { ObjectId } = require('mongodb');
 const multer = require('multer');
-// const rescue = require('express-rescue');
+
 const createRecipeService = require('../service/recipeService');
 const {
   createRecipeModel,
@@ -10,12 +10,11 @@ const {
   updateModel,
   deleteRecipeModel,
 } = require('../model/recipeModel');
-const authentication = require('../middleware/authentication');
-// const service = require('../service/recipeService');
+const { authToken } = require('../middleware/authentication');
 
 const recipeRouter = Router();
 
-recipeRouter.post('/', authentication, createRecipeService, async (req, res) => {
+recipeRouter.post('/', authToken, createRecipeService, async (req, res) => {
   try {
     const { name, ingredients, preparation } = req.body;
     const { _id: userId } = req.payload.user;
@@ -62,7 +61,7 @@ recipeRouter.put('/:id', async (req, res) => {
   }
 });
 
-recipeRouter.delete('/:id', authentication, async (req, res) => {
+recipeRouter.delete('/:id', authToken, async (req, res) => {
   try {
     const recipeById = await showByIdModel(req.params.id);
     if (!recipeById) {
@@ -89,7 +88,7 @@ const storage = multer.diskStorage({
 
 const uploadImage = multer({ storage });
 
-recipeRouter.put('/:id/image/', authentication, uploadImage.single('image'), async (req, res) => {
+recipeRouter.put('/:id/image/', authToken, uploadImage.single('image'), async (req, res) => {
   try {
     console.log('sticker', req.file);
     const recipeById = await showByIdModel(req.params.id);
