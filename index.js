@@ -1,25 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { loginController, recipesController, usersController } = require('./controllers');
+const path = require('path');
+
+const userRouter = require('./controllers/user');
+const loginRouter = require('./controllers/login');
+const recipeRouter = require('./controllers/recipes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 app.use(bodyParser.json());
-app.use('/login', loginController);
-app.use('/recipes', recipesController);
-app.use('/users', usersController);
+
+app.use('/users', userRouter);
+app.use('/login', loginRouter);
+app.use('/recipes', recipeRouter);
+app.use('/images', express.static(path.join(__dirname, '.', 'uploads')));
 
 // não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (_req, res) => {
-  res.send();
+app.get('/', (request, response) => {
+  response.send();
 });
 
-const errorMiddleware = (err, _res, req, _next) => {
-  const { status, message } = err;
-  req.status(status).json({ message });
-};
-
-app.use(errorMiddleware);
-
-app.listen(PORT, () => { console.log(`Online on ${PORT}`); });
+app.listen(3000, console.log('proto'));
