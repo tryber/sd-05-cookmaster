@@ -1,6 +1,6 @@
 const { Router } = require('express');
 // const rescue = require('express-rescue');
-const createUserService = require('../middleware/user');
+const createUserService = require('../service/UserService');
 const authToken = require('../middleware/authentication');
 const { createUserModel } = require('../model/UserModel');
 

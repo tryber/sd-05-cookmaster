@@ -1,4 +1,4 @@
-module.exports = async (err, _req, res, _next) => {
+/* module.exports = async (err, _req, res, _next) => {
   const { error, ...secondError } = err;
 
   if (err.message === 'Invalid entries. Try again.') {
@@ -29,3 +29,4 @@ module.exports = async (err, _req, res, _next) => {
     return res.status(401).json(secondError);
   }
 };
+*/
