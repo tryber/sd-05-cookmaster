@@ -34,7 +34,7 @@ users.post(
         .status(403)
         .json({ message: 'Only admins can register new admins' });
     }
-    const newUser = await usersService.user.create(
+    const newUser = await usersService.admin(
       name,
       email,
       password,
