@@ -6,7 +6,8 @@ const secret = '12345678';
 
 module.exports = async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
+    const { authorization: token } = req.headers;
+    console.log('aqui está o token', token);
     if (!token) return res.status(401).json({ message: 'missing auth token' });
     const payload = jwt.verify(token, secret);
     const user = await usersModel.getByEmail(payload.userData);

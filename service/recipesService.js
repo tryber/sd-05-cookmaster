@@ -37,7 +37,7 @@ const update = async (id, name, ingredients, preparation, userId) => {
       message: 'Algo deu errado',
     };
   }
-  return recipesModel.update(id, name, ingredients, preparation, userId);
+  return recipesModel.update(id, { name, ingredients, preparation }, userId);
 };
 
 const remove = async (id) => {
@@ -54,10 +54,7 @@ const remove = async (id) => {
 };
 
 const updateImage = async (id, role, userId) => {
-  if (
-    role !== 'admin'
-    && toString(userId) !== toString(id)
-  ) {
+  if (role !== 'admin' && toString(userId) !== toString(id)) {
     return {
       error: true,
       statusCode: 401,

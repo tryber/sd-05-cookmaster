@@ -23,14 +23,14 @@ const getById = async (id) => {
     recipe.findOne({ _id: ObjectId(id) }));
 };
 
-const update = async (id, name, ingredients, preparation, userId) => {
+const update = async (id, { name, ingredients, preparation, image = '' }, userId) => {
   if (!ObjectId.isValid(id)) return null;
   getCollection('recipes').then((recipe) =>
     recipe.updateOne(
       { _id: ObjectId(id) },
-      { $set: { name, ingredients, preparation, userId } },
+      { $set: { name, ingredients, preparation, userId, image } },
     ));
-  return { _id: id, name, ingredients, preparation, userId };
+  return { _id: id, name, ingredients, preparation, userId, image };
 };
 
 const remove = async (id) => {
