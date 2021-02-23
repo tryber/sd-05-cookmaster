@@ -1,8 +1,6 @@
+const { ObjectID } = require('mongodb');
 const { Router } = require('express');
-const { ObjectId } = require('mongodb');
 const multer = require('multer');
-
-const { createRecipeService } = require('../service/recipeService');
 const {
   createRecipeModel,
   showRecipeModel,
@@ -10,7 +8,8 @@ const {
   updateModel,
   deleteRecipeModel,
 } = require('../model/recipeModel');
-const { authToken } = require('../middleware/authentication');
+const { createRecipeService } = require('../service/recipeService');
+const authToken = require('../middleware/authentication');
 
 const recipeRouter = Router();
 
@@ -24,17 +23,18 @@ recipeRouter.post('/', authToken, createRecipeService, async (req, res) => {
       return res.status(201).json(newRecipe);
     }
   } catch (error) {
-    return res.status(401).json({ message: 'jwt malformed' });
+    res.status(401).json({ message: 'jwt malformed' });
   }
 });
 
 recipeRouter.get('/', async (_req, res) => {
   const showRecipe = await showRecipeModel();
+
   return res.status(200).json(showRecipe);
 });
 
 recipeRouter.get('/:id', async (req, res) => {
-  if (!ObjectId.isValid(req.params.id)) {
+  if (!ObjectID.isValid(req.params.id)) {
     return res.status(404).json({
       message: 'recipe not found',
     });
@@ -43,13 +43,15 @@ recipeRouter.get('/:id', async (req, res) => {
   const showRecipeId = await showByIdModel(req.params.id);
 
   if (!showRecipeId) {
-    return res.status(404).json({ message: 'recipe not found' });
+    return res.status(404).json({
+      message: 'recipe not found',
+    });
   }
 
   return res.status(200).json(showRecipeId);
 });
 
-recipeRouter.put('/:id', async (req, res) => {
+recipeRouter.put('/:id', authToken, async (req, res) => {
   try {
     const { name, ingredients, preparation, userId } = req.body;
     const { id } = req.params;
@@ -90,7 +92,6 @@ const uploadImage = multer({ storage });
 
 recipeRouter.put('/:id/image/', authToken, uploadImage.single('image'), async (req, res) => {
   try {
-    console.log('sticker', req.file);
     const recipeById = await showByIdModel(req.params.id);
     const { _id: id, userId } = recipeById;
     const { _id: payloadId, role } = req.payload.user;
