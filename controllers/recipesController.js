@@ -98,7 +98,7 @@ recipes.delete('/:id', auth, async (req, res) => {
 recipes.put('/:id/image', auth, upload.single('image'), rescue(async (req, res) => {
   const { id } = req.params;
 
-  const image = await recipesService.uploadImages(id);
+  const image = await recipesService.single(id);
 
   return res.status(200).json(image);
 }));
