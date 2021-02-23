@@ -53,10 +53,27 @@ const remove = async (id) => {
   return remove;
 };
 
+const updateImage = async (id, role, userId) => {
+  if (
+    role !== 'admin'
+    && toString(userId) !== toString(id)
+  ) {
+    return {
+      error: true,
+      statusCode: 401,
+      code: 'invalid_data',
+      message: 'user not authenticated or not an admin',
+    };
+  }
+
+  return recipesModel.update(id);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   remove,
+  updateImage,
 };

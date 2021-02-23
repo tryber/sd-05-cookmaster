@@ -1,10 +1,24 @@
+const multer = require('multer');
+
 const { Router } = require('express');
+
+const rescue = require('express-rescue');
 
 const recipes = Router();
 
 const recipesService = require('../service/recipesService');
 
 const auth = require('../middlewares/auth');
+
+const storage = multer.diskStorage({
+  destination: 'uploads',
+  filename: (req, _file, cb) => {
+    const { id } = req.params;
+    cb(null, `${id}.jpeg`);
+  },
+});
+
+const upload = multer({ storage });
 
 recipes.post('/', auth, async (req, res) => {
   try {
@@ -62,9 +76,7 @@ recipes.put('/:id', auth, async (req, res) => {
       userId,
     );
     if (update.error) {
-      return res
-        .status(update.statusCode)
-        .json({ message: update.message });
+      return res.status(update.statusCode).json({ message: update.message });
     }
     return res.status(200).json(update);
   } catch (error) {
@@ -75,12 +87,20 @@ recipes.put('/:id', auth, async (req, res) => {
 recipes.delete('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
-    const deletaReceita = await recipesService.remove(id);
+    const deleteRecipe = await recipesService.remove(id);
     if (!auth) return res.status(401).json({ message: 'missing auth token' });
-    res.status(204).json(deletaReceita);
+    res.status(204).json(deleteRecipe);
   } catch (error) {
     res.status(500).json({ message: 'Algo deu errado' });
   }
 });
+
+recipes.put('/:id/image', auth, upload.single('image'), rescue(async (req, res) => {
+  const { id } = req.params;
+
+  const image = await recipesService.uploadImages(id);
+
+  return res.status(200).json(image);
+}));
 
 module.exports = recipes;

@@ -1,7 +1,7 @@
 const getCollection = require('./get-connection');
 
 const getByEmail = async ({ email }) =>
-  getCollection('users').then((emails) => emails.findOne({ email }));
+  getCollection('users').then((user) => user.findOne({ email }));
 
 const create = async (name, email, password, role = 'user') =>
   getCollection('users')
